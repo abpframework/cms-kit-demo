@@ -3,6 +3,7 @@ using System;
 using CmsKitDemo.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -11,9 +12,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace CmsKitDemo.Migrations
 {
     [DbContext(typeof(CmsKitDemoDbContext))]
-    partial class CmsKitDemoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230829122807_CmsKitAndBlobStoring")]
+    partial class CmsKitAndBlobStoring
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -48,6 +48,12 @@ using Volo.Abp.UI.Navigation;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.Validation.Localization;
 using Volo.Abp.VirtualFileSystem;
+using Volo.Abp.BlobStoring.Database;
+using Volo.Abp.BlobStoring.Database.EntityFrameworkCore;
+using Volo.CmsKit;
+using Volo.CmsKit.EntityFrameworkCore;
+using Volo.CmsKit.Web;
+using Volo.Abp.Threading;
 
 namespace CmsKitDemo;
 
@@ -99,7 +105,17 @@ namespace CmsKitDemo;
     typeof(AbpSettingManagementApplicationModule),
     typeof(AbpSettingManagementEntityFrameworkCoreModule),
     typeof(AbpSettingManagementHttpApiModule),
-    typeof(AbpSettingManagementWebModule)
+    typeof(AbpSettingManagementWebModule),
+
+    // CMS Kit module packages
+    typeof(CmsKitApplicationModule),
+    typeof(CmsKitEntityFrameworkCoreModule),
+    typeof(CmsKitHttpApiModule),
+    typeof(CmsKitWebModule),
+
+    // Blob Storing module packages
+    typeof(BlobStoringDatabaseDomainModule),
+    typeof(BlobStoringDatabaseEntityFrameworkCoreModule)
 )]
 public class CmsKitDemoModule : AbpModule
 {
@@ -108,6 +124,8 @@ public class CmsKitDemoModule : AbpModule
 
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
+        CmsKitDemoGlobalFeatureConfigurator.Configure();
+
         context.Services.PreConfigure<AbpMvcDataAnnotationsLocalizationOptions>(options =>
         {
             options.AddAssemblyResource(
