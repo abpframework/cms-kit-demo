@@ -6,5 +6,5 @@ namespace CmsKitDemo;
 [Dependency(ReplaceServices = true)]
 public class CmsKitDemoBrandingProvider : DefaultBrandingProvider
 {
-    public override string AppName => "CmsKitDemo";
+    public override string AppName => "CMS Kit Demo";
 }
