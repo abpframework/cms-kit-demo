@@ -17,7 +17,7 @@
                 var image = Model.Images[i];
 
                 <div class="col-3 my-3">
-                    <a class="card box-item" href="/image-gallery/detail/@image.Id">
+                    <a class="card box-item" href="/image-gallery/detail/@image.Id" data-like-count="@image.LikeCount" data-comment-count="@image.CommentCount">
                         <img src="/api/cms-kit/media/@image.CoverImageMediaId" class="card-img-top" alt="@image.Description.TruncateWithPostfix(47, "...")" />
                     </a>
                 </div>
