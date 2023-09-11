@@ -1,0 +1,37 @@
+﻿@page
+@using CmsKitDemo.Localization;
+@using CmsKitDemo.Permissions;
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.Extensions.Localization;
+@model CmsKitDemo.Pages.Gallery.Management.ManagementModel
+@inject IStringLocalizer<CmsKitDemoResource> L
+@inject IAuthorizationService AuthorizationService
+@section scripts
+{
+    <abp-script-bundle name="@(nameof(Pages_Gallery_Management_Index))">
+       <abp-script src="/Pages/Gallery/Management/Index.cshtml.js" />
+        <abp-script src="/Pages/Gallery/Management/CreateModal.cshtml.js" />
+    </abp-script-bundle>
+}
+
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title>@L["Images"]</abp-card-title>
+            </abp-column>
+            <abp-column size-md="_6" class="text-end">
+                @if (await AuthorizationService.IsGrantedAsync(CmsKitDemoPermissions.GalleryImage.Create))
+                {
+                        <abp-button id="NewImageButton"
+                            text="@L["NewImage"].Value"
+                            icon="plus"
+                            button-type="Primary" />
+                }
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-table striped-rows="true" id="ImagesTable"></abp-table>
+    </abp-card-body>
+</abp-card>

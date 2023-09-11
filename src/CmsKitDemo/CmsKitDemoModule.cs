@@ -331,7 +331,9 @@ public class CmsKitDemoModule : AbpModule
         Configure<RazorPagesOptions>(options =>
         {
             options.Conventions.AddPageRoute("/Gallery/Index", "image-gallery");
-            options.Conventions.AddPageRoute("/Gallery/Detail", "image-gallery/detail/{coverImageMediaId}");
+            options.Conventions.AddPageRoute("/Gallery/Detail", "image-gallery/detail/{ImageId}");
+
+            options.Conventions.AddPageRoute("/Gallery/Management/Index", "ImageManagement");
         });
     }
 
@@ -358,8 +360,6 @@ public class CmsKitDemoModule : AbpModule
             options.EntityTypes.Add(new CommentEntityTypeDefinition(CmsKitDemoConsts.ImageGalleryEntityType));
             options.IsRecaptchaEnabled = true; //false by default
         });
-
-
     }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)

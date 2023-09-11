@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CmsKitDemo.Entities;
+using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BlobStoring.Database.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
+using Volo.Abp.EntityFrameworkCore.Modeling;
 using Volo.Abp.FeatureManagement.EntityFrameworkCore;
 using Volo.Abp.Identity.EntityFrameworkCore;
 using Volo.Abp.OpenIddict.EntityFrameworkCore;
@@ -14,6 +16,8 @@ namespace CmsKitDemo.Data;
 
 public class CmsKitDemoDbContext : AbpDbContext<CmsKitDemoDbContext>
 {
+    public DbSet<GalleryImage> GalleryImages { get; set; }
+    
     public CmsKitDemoDbContext(DbContextOptions<CmsKitDemoDbContext> options)
         : base(options)
     {
@@ -36,5 +40,10 @@ public class CmsKitDemoDbContext : AbpDbContext<CmsKitDemoDbContext>
         builder.ConfigureCmsKit();
 
         /* Configure your own entities here */
+        builder.Entity<GalleryImage>(b =>
+        {
+            b.ToTable(CmsKitDemoConsts.DbTablePrefix + "Images", CmsKitDemoConsts.DbSchema);
+            b.ConfigureByConvention();
+        });
     }
 }
