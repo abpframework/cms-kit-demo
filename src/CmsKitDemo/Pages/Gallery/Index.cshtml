@@ -1,5 +1,8 @@
 ﻿@page
+@using CmsKitDemo.Localization;
+@using Microsoft.Extensions.Localization;
 @model CmsKitDemo.Pages.Gallery.ImageGalleryModel
+@inject IStringLocalizer<CmsKitDemoResource> L
 
 @section styles {
     <abp-style src="/Pages/Gallery/Index.cshtml.css" />
@@ -15,7 +18,7 @@
 
                 <div class="col-3 my-3">
                     <a class="card box-item" href="/image-gallery/detail/@image.Id">
-                        <img src="/api/cms-kit/media/@image.CoverImageMediaId" class="card-img-top" alt="..." />
+                        <img src="/api/cms-kit/media/@image.CoverImageMediaId" class="card-img-top" alt="@image.Description.TruncateWithPostfix(47, "...")" />
                     </a>
                 </div>
             }
@@ -25,6 +28,6 @@
 else
 {
     <div class="alert alert-info" role="alert">
-        There is not any image!
+        @L["ThereIsNotAnyImageYet"]
     </div>
 }

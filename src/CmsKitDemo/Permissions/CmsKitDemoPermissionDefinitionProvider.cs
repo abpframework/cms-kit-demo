@@ -8,9 +8,9 @@ namespace CmsKitDemo.Permissions
     {
         public override void Define(IPermissionDefinitionContext context)
         {
-            var myGroup = context.AddGroup(CmsKitDemoPermissions.GalleryImage.Root, L("Permission:GalleryImage"));
+            var myGroup = context.AddGroup(CmsKitDemoPermissions.GalleryImage.Root, L("Permission:ImageManagement"));
 
-            myGroup.AddPermission(CmsKitDemoPermissions.GalleryImage.Management, L("Permission:GalleryImageManagement"));
+            myGroup.AddPermission(CmsKitDemoPermissions.GalleryImage.Management, L("Permission:Management"));
             myGroup.AddPermission(CmsKitDemoPermissions.GalleryImage.Create, L("Permission:Create"));
             myGroup.AddPermission(CmsKitDemoPermissions.GalleryImage.Update, L("Permission:Edit"));
             myGroup.AddPermission(CmsKitDemoPermissions.GalleryImage.Delete, L("Permission:Delete"));

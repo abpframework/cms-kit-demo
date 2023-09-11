@@ -45,7 +45,7 @@ public class CmsKitDemoMenuContributor : IMenuContributor
 
         //Image Gallery Management Page
         context.Menu.Items.Add(
-            new ApplicationMenuItem(CmsKitDemoMenus.GalleryImage.ImageMenus, l["ImageManagement"], "/ImageManagement", icon: "fa fa-photo-film")
+            new ApplicationMenuItem(CmsKitDemoMenus.GalleryImage.ImageMenus, l["ImageManagement"], "/ImageManagement", icon: "fa fa-palette")
                 .RequirePermissions(CmsKitDemoPermissions.GalleryImage.Management)
         );
 

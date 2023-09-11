@@ -26,7 +26,7 @@
                     });
             }
             else if (file.size > 1024 * 1024) {
-                abp.message.error(l('TheFileIsTooLarge'))
+                abp.message.error(l('TheFileIsTooBig'))
                     .then(() => {
                         $('#ImageFile').val('');
                         file = null;
