@@ -346,11 +346,6 @@ public class CmsKitDemoModule : AbpModule
                     entityType: CmsKitDemoConsts.ImageGalleryEntityType,
                     reactions: new[]
                     {
-                        new ReactionDefinition(StandardReactions.Smile),
-                        new ReactionDefinition(StandardReactions.ThumbsUp),
-                        new ReactionDefinition(StandardReactions.ThumbsDown),
-                        new ReactionDefinition(StandardReactions.Confused),
-                        new ReactionDefinition(StandardReactions.Eyes),
                         new ReactionDefinition(StandardReactions.Heart)
                     }));
         });
@@ -358,7 +353,7 @@ public class CmsKitDemoModule : AbpModule
         Configure<CmsKitCommentOptions>(options =>
         {
             options.EntityTypes.Add(new CommentEntityTypeDefinition(CmsKitDemoConsts.ImageGalleryEntityType));
-            options.IsRecaptchaEnabled = true; //false by default
+            options.IsRecaptchaEnabled = true; 
         });
     }
 
