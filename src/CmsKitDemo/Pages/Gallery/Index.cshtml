@@ -1,0 +1,19 @@
+﻿@page
+@model CmsKitDemo.Pages.Gallery.ImageGalleryModel
+
+@section styles {
+    <abp-style src="/Pages/Gallery/Index.cshtml.css" />
+}
+
+<div class="container">
+    <div class="row">
+        @for(int i = 0; i < 10; i++)
+        {
+            <div class="col-3 my-3">
+                <a class="card box-item" href="/image-gallery/detail/bd720e41-a326-4f88-a598-32ffb703373f">
+                    <img src="https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png" class="card-img-top" alt="...">
+                </a>
+            </div>
+        }
+    </div>
+</div>

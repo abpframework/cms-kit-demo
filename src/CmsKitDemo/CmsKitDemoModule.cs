@@ -54,6 +54,9 @@ using Volo.CmsKit;
 using Volo.CmsKit.EntityFrameworkCore;
 using Volo.CmsKit.Web;
 using Volo.Abp.Threading;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Volo.CmsKit.Reactions;
+using Volo.CmsKit.Comments;
 
 namespace CmsKitDemo;
 
@@ -165,6 +168,8 @@ public class CmsKitDemoModule : AbpModule
         ConfigureVirtualFiles(hostingEnvironment);
         ConfigureLocalization();
         ConfigureEfCore(context);
+        ConfigureRazorPages();
+        ConfigureCmsKit(context);
     }
 
     private void ConfigureAuthentication(ServiceConfigurationContext context)
@@ -319,6 +324,42 @@ public class CmsKitDemoModule : AbpModule
         {
             options.TransactionBehavior = UnitOfWorkTransactionBehavior.Disabled;
         });
+    }
+
+    private void ConfigureRazorPages()
+    {
+        Configure<RazorPagesOptions>(options =>
+        {
+            options.Conventions.AddPageRoute("/Gallery/Index", "image-gallery");
+            options.Conventions.AddPageRoute("/Gallery/Detail", "image-gallery/detail/{coverImageMediaId}");
+        });
+    }
+
+    private void ConfigureCmsKit(ServiceConfigurationContext context)
+    {
+        Configure<CmsKitReactionOptions>(options =>
+        {
+            options.EntityTypes.Add(
+                new ReactionEntityTypeDefinition(
+                    entityType: CmsKitDemoConsts.ImageGalleryEntityType,
+                    reactions: new[]
+                    {
+                        new ReactionDefinition(StandardReactions.Smile),
+                        new ReactionDefinition(StandardReactions.ThumbsUp),
+                        new ReactionDefinition(StandardReactions.ThumbsDown),
+                        new ReactionDefinition(StandardReactions.Confused),
+                        new ReactionDefinition(StandardReactions.Eyes),
+                        new ReactionDefinition(StandardReactions.Heart)
+                    }));
+        });
+
+        Configure<CmsKitCommentOptions>(options =>
+        {
+            options.EntityTypes.Add(new CommentEntityTypeDefinition(CmsKitDemoConsts.ImageGalleryEntityType));
+            options.IsRecaptchaEnabled = true; //false by default
+        });
+
+
     }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
