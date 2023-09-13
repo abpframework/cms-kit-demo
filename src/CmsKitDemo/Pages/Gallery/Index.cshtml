@@ -11,21 +11,26 @@
 @if(Model.Images.Any())
 {
     <div class="container">
-        <div class="row">
+        <div class="row g-4">
             @for (int i = 0; i < Model.Images.Count; i++)
             {
                 var image = Model.Images[i];
 
-                <div class="col-3 my-3">
-                    <a class="card box-item" href="/image-gallery/detail/@image.Id">
-                        <img src="/api/cms-kit/media/@image.CoverImageMediaId" class="card-img-top" alt="@image.Description.TruncateWithPostfix(47, "...")" />
-                        <div class="overlay d-flex justify-content-center align-items-center">
-                            <div class="image-detail">
-                                <span class="badge bg-secondary"><i class="fa fa-heart"></i> @image.LikeCount</span>
-                                <span class="badge bg-secondary"><i class="fa fa-comment"></i> @image.CommentCount</span>
-                            </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body p-0"> 
+                            <a href="/image-gallery/detail/@image.Id">
+                                <img src="/api/cms-kit/media/@image.CoverImageMediaId" class="card-img-top" alt="@image.Description.TruncateWithPostfix(47, "...")" />
+                                
+                            </a>
+                            <div class="d-flex px-4 py-3">
+                                    <div class="image-detail">
+                                        <span class="me-3"><i class="far fa-heart"></i> @image.LikeCount like</span>
+                                        <span class="me-3"><i class="far fa-comment"></i>  @image.CommentCount comment</span>
+                                    </div>
+                                </div>
                         </div>
-                    </a>
+                    </div>
                 </div>
             }
         </div>
