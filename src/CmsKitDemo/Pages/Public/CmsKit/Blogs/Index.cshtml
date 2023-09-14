@@ -48,7 +48,7 @@
     @foreach (var blog in Model.Blogs.Items)
     {
         <abp-column size="_12" size-md="_6" size-lg="_4">
-            <abp-card>
+            <abp-card class="card-link">
                 @if (blog.CoverImageMediaId != null)
                 {
                     <img src="/api/cms-kit/media/@blog.CoverImageMediaId" class="card-img-top" onerror="this.src='@dummyImageSource'" />
@@ -57,16 +57,16 @@
                 {
                     <img src="@(dummyImageSource)?text=@blog.Title" class="card-img-top" />
                 }
-                <abp-card-body class="p-4">
-                    <h5>@blog.Title</h5>
+                <abp-card-body>
                     <p class="mb-2">
-                        <span class="font-weight-bold author-name-span" data-author-id="@blog.Author.Id">@@@blog.Author?.UserName</span>
+                        <span class="fw-semibold author-name-span me-2" data-author-id="@blog.Author.Id">@@@blog.Author?.UserName</span> 
                         <small style="opacity:.65;">@blog.CreationTime</small>
                     </p>
+                    <h5 class="my-3">@blog.Title</h5>
                     <p style="min-height: 60px;">@blog.ShortDescription</p>
-                    <div class="d-grid gap-2">
-                        <a href="/blogs/@Model.BlogSlug/@blog.Slug" class="btn btn-light">
-                            @L["Read"]
+                    <div class=" ">
+                        <a href="/blogs/@Model.BlogSlug/@blog.Slug" class="stretched-link text-decoration-none fw-normal">
+                            @L["Read"] <i class="fa fa-chevron-right"></i>
                         </a>
                     </div>
                 </abp-card-body>
