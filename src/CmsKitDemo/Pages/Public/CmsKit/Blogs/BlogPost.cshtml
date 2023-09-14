@@ -1,0 +1,175 @@
+﻿@page
+
+@using Volo.Abp.Data
+@using Volo.Abp.Users;
+@using Volo.CmsKit.Public.Blogs
+@using Volo.CmsKit.Public.Web.Pages.CmsKit.Shared.Components.Blogs.BlogPostComment
+@using Volo.CmsKit.Public.Web.Pages
+@using Volo.Abp.GlobalFeatures
+@using Volo.CmsKit.GlobalFeatures
+@using Volo.CmsKit.Public.Web.Pages.CmsKit.Shared.Components.ReactionSelection
+@using Volo.CmsKit.Public.Web.Pages.CmsKit.Shared.Components.Rating
+@using Volo.CmsKit.Public.Web.Pages.CmsKit.Shared.Components.Tags
+@using Volo.CmsKit.Web.Renderers
+@using Volo.Abp.AspNetCore.Mvc.UI.Packages.HighlightJs
+@using Volo.CmsKit.Contents
+
+@inherits CmsKitPublicPageBase
+
+@model Volo.CmsKit.Public.Web.Pages.Public.CmsKit.Blogs.BlogPostModel
+
+@inject ICurrentUser CurrentUser
+@inject IMarkdownToHtmlRenderer MarkdownRenderer
+
+@{
+    string dummyImageSource = "https://dummyimage.com/1280x720/a3a3a3/fff.png?text=" + Model.ViewModel.Title;
+    var isScrollIndexEnabled = GlobalFeatureManager.Instance.IsEnabled<BlogPostScrollIndexFeature>() && Model.BlogPostScrollIndexFeature?.IsEnabled == true;
+}
+
+@section styles{
+    @if (isScrollIndexEnabled)
+    {
+        <abp-style-bundle>
+            <abp-style src="/Pages/Public/CmsKit/Blogs/bootstrap-toc.css" />
+        </abp-style-bundle>
+    }
+    <abp-style-bundle>
+        <abp-style src="/Pages/Public/CmsKit/Blogs/blogPost.css" />
+        <abp-style type="typeof(HighlightJsStyleContributor)" />
+    </abp-style-bundle>
+}
+
+@section scripts{
+    @if (isScrollIndexEnabled)
+    {
+        <abp-script-bundle>
+            <abp-script src="/Pages/Public/CmsKit/Blogs/bootstrap-toc.js" />
+            <abp-script src="/Pages/Public/CmsKit/Blogs/blogpost-scroll-index.js" />
+        </abp-script-bundle>
+    }
+
+    <abp-script-bundle>
+        <abp-script type="typeof(HighlightJsScriptContributor)" />
+        <abp-script src="/Pages/Public/CmsKit/highlightOnLoad.js" />
+        <abp-script src="/Pages/Public/CmsKit/Blogs/blogPost.js" />
+    </abp-script-bundle>
+}
+
+<div class="row">
+    <div class="col-lg-8 col-md-10 col-12 mx-auto pb-4">
+            <input hidden id="BlogId" value="@Model.ViewModel.Id" />
+        <abp-card class="mb-4">
+            
+            <div >
+                <img src="/api/cms-kit/media/@Model.ViewModel.CoverImageMediaId" class="card-img-top rounded" onerror="this.src='@dummyImageSource'" />
+            </div>
+            <abp-card-body class="p-lg-5">
+                <abp-row>
+                    <div class="col">
+                        <p class="mt-2"> 
+                            <a href="/blogs/@Model.BlogSlug?authorId=@Model.ViewModel.Author.Id" class="text-decoration-none text-dark">
+                                <span class="fw-semibold">@@@Model.ViewModel.Author?.UserName</span>
+                            </a>
+                            <small style="opacity:.65;">@Model.ViewModel.CreationTime</small>
+                        </p>
+                        <h1 class="mt-3 mb-4">@Model.ViewModel.Title</h1>
+                        @foreach (var contentFragment in Model.ViewModel.ContentFragments)
+                        {
+                            if (contentFragment.Type == ContentConsts.Markdown)
+                            {
+                                @Html.Raw(await MarkdownRenderer.RenderAsync(contentFragment.GetProperty<string>("Content"), allowHtmlTags: true, preventXSS: true))
+                            }
+                            else if (contentFragment.Type == ContentConsts.Widget)
+                            {
+                                @await Component.InvokeAsync(contentFragment.GetProperty<string>("Type"), contentFragment.ExtraProperties.ConvertToDynamicObject())
+                            }
+                        }
+                        <p>
+                            @if (Model.ViewModel.LastModificationTime != null)
+                            {
+                                <small style="opacity:.65;">@L["LastModification"].Value : @Model.ViewModel.LastModificationTime</small>
+                            }
+                        </p> 
+
+                        @if (GlobalFeatureManager.Instance.IsEnabled<TagsFeature>())
+                        {
+                            if (Model.TagsFeature?.IsEnabled == true)
+                            {
+                                @await Component.InvokeAsync(typeof(TagViewComponent), new
+                        {
+                        entityType = Volo.CmsKit.Blogs.BlogPostConsts.EntityType,
+                        entityId = Model.ViewModel.Id.ToString(),
+                        urlFormat = $"/blogs/{Model.BlogSlug}?tagId={{TagId}}"
+                        })
+                            }
+                        }
+                        <hr class="my-4">
+                    </div>
+                </abp-row>
+                <abp-row>
+                    <div class="col">
+
+                        <abp-row>
+                            <abp-column size-lg="_6" size-md="_12">
+                                @if (GlobalFeatureManager.Instance.IsEnabled<ReactionsFeature>())
+                                {
+                                    if (Model.ReactionsFeature?.IsEnabled == true)
+                                    {
+                                        @await Component.InvokeAsync(typeof(ReactionSelectionViewComponent), new
+                                {
+                                entityType = Volo.CmsKit.Blogs.BlogPostConsts.EntityType,
+                                entityId = Model.ViewModel.Id.ToString()
+                                })
+                                    }
+                                }
+                            </abp-column>
+                            <abp-column size-lg="_6" size-md="_12" class="d-flex justify-content-end">
+                                <div>
+                                    @if (GlobalFeatureManager.Instance.IsEnabled<RatingsFeature>())
+                                    {
+                                        if (Model.RatingsFeature?.IsEnabled == true)
+                                        {
+                                            @await Component.InvokeAsync(typeof(RatingViewComponent), new
+                                    {
+                                    entityType = Volo.CmsKit.Blogs.BlogPostConsts.EntityType,
+                                    entityId = Model.ViewModel.Id.ToString()
+                                    })
+                                        }
+                                    }
+                                </div>
+                            </abp-column>
+                        </abp-row>
+                    </div>
+                </abp-row>
+            </abp-card-body>
+            
+            <div class=" d-sm-none d-md-block position-absolute " style="right: 1rem; top: 1rem;">
+                @if (Model.ViewModel.Author.Id == CurrentUser.Id)
+                {
+                    <button id="deleteBlogPost" class="btn btn-danger">
+                        <i class="fa fa-remove"></i> @L["Delete"]
+                    </button>
+                } 
+            </div>
+        </abp-card>
+                <abp-row>
+                    <div class="col">
+
+                                @if (GlobalFeatureManager.Instance.IsEnabled<CommentsFeature>())
+                                {
+                                    if (Model.CommentsFeature?.IsEnabled == true)
+                                    {
+                                        @await Component.InvokeAsync(typeof(DefaultBlogPostCommentViewComponent), new
+                                        {
+                                            entityType = Volo.CmsKit.Blogs.BlogPostConsts.EntityType,
+                                            entityId = Model.ViewModel.Id.ToString()
+                                        })
+                                    }
+                                } 
+
+                    </div>
+                </abp-row>
+    </div>
+
+
+</div>

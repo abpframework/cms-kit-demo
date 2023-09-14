@@ -1,0 +1,56 @@
+﻿@page
+@using CmsKitDemo;
+@using Volo.Abp.GlobalFeatures;
+@using Volo.CmsKit.GlobalFeatures;
+@using Volo.CmsKit.Public.Web.Pages.CmsKit.Shared.Components.Commenting;
+@using Volo.CmsKit.Public.Web.Pages.CmsKit.Shared.Components.ReactionSelection;
+@model CmsKitDemo.Pages.Gallery.DetailModel
+
+@section styles{
+    <abp-style src="/Pages/Gallery/Detail.cshtml.css" />
+}
+ 
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body p-0"> 
+                <img class="rounded w-100" src="/api/cms-kit/media/@Model.Image.CoverImageMediaId">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="image-detail-wrapper card">
+            <div class="card-body">
+                <p class="mb-auto">@Model.Image.Description</p>
+                
+
+                <div class="row mt-4">
+                    <div class="col"> 
+                        @if (GlobalFeatureManager.Instance.IsEnabled<ReactionsFeature>())
+                        {
+                            @await Component.InvokeAsync(typeof(ReactionSelectionViewComponent), new
+                            {
+                                entityType = CmsKitDemoConsts.ImageGalleryEntityType,
+                                entityId = Model.Image.Id.ToString()
+                            })
+                        }
+                    </div>
+                    <div class="col-auto text-end">
+                        <small class="text-muted">Published at: @Model.Image.CreationTime.ToShortDateString()</small>
+                    </div>
+                </div>
+                
+            </div> 
+ 
+        </div>
+
+                @if (GlobalFeatureManager.Instance.IsEnabled<CommentsFeature>())
+                {
+                    @await Component.InvokeAsync(typeof(CommentingViewComponent), new
+                    {
+                        entityType = CmsKitDemoConsts.ImageGalleryEntityType,
+                        entityId = Model.Image.Id.ToString()
+                    })
+                }
+    </div>
+</div>  

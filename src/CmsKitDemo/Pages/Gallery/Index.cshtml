@@ -1,0 +1,44 @@
+﻿@page
+@using CmsKitDemo.Localization;
+@using Microsoft.Extensions.Localization;
+@model CmsKitDemo.Pages.Gallery.ImageGalleryModel
+@inject IStringLocalizer<CmsKitDemoResource> L
+
+@section styles {
+    <abp-style src="/Pages/Gallery/Index.cshtml.css" />
+}
+
+@if(Model.Images.Any())
+{
+    <div class="container">
+        <div class="row g-4">
+            @for (int i = 0; i < Model.Images.Count; i++)
+            {
+                var image = Model.Images[i];
+
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body p-0">
+                            <a href="/image-gallery/@image.Id/detail">
+                                <img src="/api/cms-kit/media/@image.CoverImageMediaId" class="card-img-top" alt="@image.Description.TruncateWithPostfix(47, "...")" />
+                                
+                            </a>
+                            <div class="d-flex px-4 py-3">
+                                    <div class="image-detail">
+                                        <span class="me-3"><i class="far fa-heart"></i> @image.LikeCount like</span>
+                                        <span class="me-3"><i class="far fa-comment"></i>  @image.CommentCount comment</span>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-info" role="alert">
+        @L["ThereIsNotAnyImageYet"]
+    </div>
+}

@@ -1,0 +1,81 @@
+﻿@page
+
+@using Volo.CmsKit.Public.Web.Pages
+@using Volo.CmsKit.Public.Web.Pages.Public.CmsKit.Blogs
+
+@inherits CmsKitPublicPageBase
+
+@model IndexModel
+
+@section styles{
+    <abp-style src="/Pages/Public/CmsKit/Blogs/index.css" />
+}
+
+@section scripts {
+    <abp-script-bundle>
+        <abp-script src="/Pages/Public/CmsKit/Blogs/index.js" />
+    </abp-script-bundle>
+}
+
+@{
+    const string dummyImageSource = "https://dummyimage.com/320x180/a3a3a3/fff.png";
+}
+
+<abp-row id="blogs-filter-area">
+    <abp-column size="_4">
+        <div class="mb-3">
+            <label class="form-label" asp-for="@Model.SelectedAuthor"></label>
+
+            <select id="AuthorSelect" asp-for="@Model.AuthorId"
+                    class="auto-complete-select"
+                    data-placeholder="@L["SelectAnAuthor"]"
+                    data-allow-clear="true"
+                    data-autocomplete-api-url="/api/cms-kit-public/blog-posts/authors"
+                    data-autocomplete-display-property="userName"
+                    data-autocomplete-value-property="id"
+                    data-autocomplete-items-property="items"
+                    data-autocomplete-filter-param-name="filter">
+
+                @if (Model.SelectedAuthor != null)
+                {
+                    <option selected value="@Model.AuthorId" selected="selected">@Model.SelectedAuthor.UserName</option>
+                }
+            </select>
+        </div>
+    </abp-column>
+</abp-row>
+<abp-row id="blogs-container">
+    @foreach (var blog in Model.Blogs.Items)
+    {
+        <abp-column size="_12" size-md="_6" size-lg="_4">
+            <abp-card class="card-link">
+                @if (blog.CoverImageMediaId != null)
+                {
+                    <img src="/api/cms-kit/media/@blog.CoverImageMediaId" class="card-img-top" onerror="this.src='@dummyImageSource'" />
+                }
+                else
+                {
+                    <img src="@(dummyImageSource)?text=@blog.Title" class="card-img-top" />
+                }
+                <abp-card-body>
+                    <p class="mb-2">
+                        <span class="fw-semibold author-name-span me-2" data-author-id="@blog.Author.Id">@@@blog.Author?.UserName</span> 
+                        <small style="opacity:.65;">@blog.CreationTime</small>
+                    </p>
+                    <h5 class="my-3">@blog.Title</h5>
+                    <p style="min-height: 60px;">@blog.ShortDescription</p>
+                    <div class=" ">
+                        <a href="/blogs/@Model.BlogSlug/@blog.Slug" class="stretched-link text-decoration-none fw-normal">
+                            @L["Read"] <i class="fa fa-chevron-right"></i>
+                        </a>
+                    </div>
+                </abp-card-body>
+            </abp-card>
+        </abp-column>
+    }
+</abp-row>
+<abp-row>
+    <abp-column>
+        <abp-paginator model="Model.PagerModel" />
+    </abp-column>
+</abp-row>

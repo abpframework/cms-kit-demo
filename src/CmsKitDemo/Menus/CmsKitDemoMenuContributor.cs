@@ -1,4 +1,6 @@
 ﻿using CmsKitDemo.Localization;
+using CmsKitDemo.Permissions;
+using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Identity.Web.Navigation;
 using Volo.Abp.SettingManagement.Web.Navigation;
 using Volo.Abp.TenantManagement.Web.Navigation;
@@ -40,6 +42,12 @@ public class CmsKitDemoMenuContributor : IMenuContributor
         {
             administration.TryRemoveMenuItem(TenantManagementMenuNames.GroupName);
         }
+
+        //Image Gallery Management Page
+        context.Menu.Items.Add(
+            new ApplicationMenuItem(CmsKitDemoMenus.GalleryImage.ImageMenus, l["Images"], "/ImageManagement", icon: "fa fa-palette")
+                .RequirePermissions(CmsKitDemoPermissions.GalleryImage.Management)
+        );
 
         return Task.CompletedTask;
     }

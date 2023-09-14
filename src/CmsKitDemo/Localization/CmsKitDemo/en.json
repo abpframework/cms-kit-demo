@@ -3,6 +3,21 @@
   "texts": {
     "Welcome_Title": "Welcome",
     "Welcome_Text": "This is a minimalist, single layer application startup template for the ABP Framework.",
-    "Menu:Home": "Home"
+    "Menu:Home": "Home",
+    "ImageManagement": "Image Management",
+    "ThereIsNotAnyImageYet": "There is not any image yet!",
+    "Description": "Description",
+    "CreationTime": "Creation Time",
+    "ThisExtensionIsNotAllowed": "File extension is not allowed. Please upload file with the allowed extensions: \"jpg, jpeg and png\"",
+    "TheFileIsTooBig": "The file is too big.",
+    "Images": "Images",
+    "NewImage": "New image",
+    "ImageDeletionConfirmationMessage": "Are you sure you want to delete this image?",
+    "SuccessfullyDeleted": "Image is successfully deleted.",
+    "Permission:ImageManagement": "Image management",
+    "Permission:Create": "Create",
+    "Permission:Edit": "Edit",
+    "Permission:Delete": "Delete",
+    "Permission:Management": "Management"
   }
 }

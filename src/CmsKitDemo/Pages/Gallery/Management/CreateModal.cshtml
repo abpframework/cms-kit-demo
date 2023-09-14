@@ -1,0 +1,22 @@
+﻿@page
+@using CmsKitDemo.Localization;
+@using Microsoft.Extensions.Localization;
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal;
+@model CmsKitDemo.Pages.Gallery.Management.CreateModalModel
+@inject IStringLocalizer<CmsKitDemoResource> L
+@{
+    Layout = null;
+}
+
+<form asp-page="/Gallery/Management/CreateModal">
+    <abp-modal>
+        <abp-modal-header title="@L["NewImage"].Value"></abp-modal-header>
+        <abp-modal-body>
+            <abp-input asp-for="Image.Description" />
+            <img class="" loading="lazy" id="img-upload" alt="" />
+            <input type="file" id="ImageFile" class="form-control" required />
+            <abp-input asp-for="Image.CoverImageMediaId" type="hidden" required/>
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
+    </abp-modal>
+</form>
