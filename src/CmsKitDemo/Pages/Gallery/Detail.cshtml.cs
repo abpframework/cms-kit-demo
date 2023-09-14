@@ -8,7 +8,7 @@ namespace CmsKitDemo.Pages.Gallery
     public class DetailModel : PageModel
     {
         [BindProperty(SupportsGet = true)]
-        public Guid ImageId { get; set; }
+        public Guid Id { get; set; }
 
         public GalleryImageDto Image { get; set; }
 
@@ -21,7 +21,7 @@ namespace CmsKitDemo.Pages.Gallery
 
         public async Task OnGetAsync()
         {
-            Image = await _imageGalleryAppService.GetAsync(ImageId);
+            Image = await _imageGalleryAppService.GetAsync(Id);
         }
     }
 }

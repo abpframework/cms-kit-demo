@@ -331,8 +331,9 @@ public class CmsKitDemoModule : AbpModule
         Configure<RazorPagesOptions>(options =>
         {
             options.Conventions.AddPageRoute("/Gallery/Index", "image-gallery");
-            options.Conventions.AddPageRoute("/Gallery/Detail", "image-gallery/detail/{ImageId}");
+            options.Conventions.AddPageRoute("/Gallery/Detail", "image-gallery/{Id}/detail");
 
+            //admin UI for image-gallery management
             options.Conventions.AddPageRoute("/Gallery/Management/Index", "ImageManagement");
         });
     }
