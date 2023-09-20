@@ -1,3 +1,7 @@
 ﻿#blogs-filter-area {
     display: none;
 }
+
+img.card-img-top {
+    min-height: 240px;
+}

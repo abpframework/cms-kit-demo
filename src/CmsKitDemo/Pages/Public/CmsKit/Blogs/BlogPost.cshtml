@@ -26,41 +26,36 @@
     var isScrollIndexEnabled = GlobalFeatureManager.Instance.IsEnabled<BlogPostScrollIndexFeature>() && Model.BlogPostScrollIndexFeature?.IsEnabled == true;
 }
 
-@section styles{
-    @if (isScrollIndexEnabled)
-    {
-        <abp-style-bundle>
-            <abp-style src="/Pages/Public/CmsKit/Blogs/bootstrap-toc.css" />
-        </abp-style-bundle>
-    }
+@section styles {
     <abp-style-bundle>
         <abp-style src="/Pages/Public/CmsKit/Blogs/blogPost.css" />
         <abp-style type="typeof(HighlightJsStyleContributor)" />
+        @if (isScrollIndexEnabled)
+        {
+            <abp-style src="/Pages/Public/CmsKit/Blogs/bootstrap-toc.css" />
+        }
     </abp-style-bundle>
 }
 
-@section scripts{
-    @if (isScrollIndexEnabled)
-    {
-        <abp-script-bundle>
-            <abp-script src="/Pages/Public/CmsKit/Blogs/bootstrap-toc.js" />
-            <abp-script src="/Pages/Public/CmsKit/Blogs/blogpost-scroll-index.js" />
-        </abp-script-bundle>
-    }
-
+@section scripts {
     <abp-script-bundle>
         <abp-script type="typeof(HighlightJsScriptContributor)" />
         <abp-script src="/Pages/Public/CmsKit/highlightOnLoad.js" />
         <abp-script src="/Pages/Public/CmsKit/Blogs/blogPost.js" />
+
+        @if(isScrollIndexEnabled)
+        {
+            <abp-script src="/Pages/Public/CmsKit/Blogs/bootstrap-toc.js" />
+            <abp-script src="/Pages/Public/CmsKit/Blogs/blogpost-scroll-index.js" />
+        }
     </abp-script-bundle>
 }
 
 <div class="row">
     <div class="col-lg-8 col-md-10 col-12 mx-auto pb-4">
-            <input hidden id="BlogId" value="@Model.ViewModel.Id" />
+        <input hidden id="BlogId" value="@Model.ViewModel.Id" />
         <abp-card class="mb-4">
-            
-            <div >
+            <div>
                 <img src="/api/cms-kit/media/@Model.ViewModel.CoverImageMediaId" class="card-img-top rounded" onerror="this.src='@dummyImageSource'" />
             </div>
             <abp-card-body class="p-lg-5">
@@ -96,11 +91,11 @@
                             if (Model.TagsFeature?.IsEnabled == true)
                             {
                                 @await Component.InvokeAsync(typeof(TagViewComponent), new
-                        {
-                        entityType = Volo.CmsKit.Blogs.BlogPostConsts.EntityType,
-                        entityId = Model.ViewModel.Id.ToString(),
-                        urlFormat = $"/blogs/{Model.BlogSlug}?tagId={{TagId}}"
-                        })
+                                {
+                                    entityType = Volo.CmsKit.Blogs.BlogPostConsts.EntityType,
+                                    entityId = Model.ViewModel.Id.ToString(),
+                                    urlFormat = $"/blogs/{Model.BlogSlug}?tagId={{TagId}}"
+                                })
                             }
                         }
                         <hr class="my-4">
@@ -116,10 +111,10 @@
                                     if (Model.ReactionsFeature?.IsEnabled == true)
                                     {
                                         @await Component.InvokeAsync(typeof(ReactionSelectionViewComponent), new
-                                {
-                                entityType = Volo.CmsKit.Blogs.BlogPostConsts.EntityType,
-                                entityId = Model.ViewModel.Id.ToString()
-                                })
+                                        {
+                                            entityType = Volo.CmsKit.Blogs.BlogPostConsts.EntityType,
+                                            entityId = Model.ViewModel.Id.ToString()
+                                        })
                                     }
                                 }
                             </abp-column>
@@ -130,10 +125,10 @@
                                         if (Model.RatingsFeature?.IsEnabled == true)
                                         {
                                             @await Component.InvokeAsync(typeof(RatingViewComponent), new
-                                    {
-                                    entityType = Volo.CmsKit.Blogs.BlogPostConsts.EntityType,
-                                    entityId = Model.ViewModel.Id.ToString()
-                                    })
+                                            {
+                                                entityType = Volo.CmsKit.Blogs.BlogPostConsts.EntityType,
+                                                entityId = Model.ViewModel.Id.ToString()
+                                            })
                                         }
                                     }
                                 </div>
@@ -152,24 +147,20 @@
                 } 
             </div>
         </abp-card>
-                <abp-row>
-                    <div class="col">
-
-                                @if (GlobalFeatureManager.Instance.IsEnabled<CommentsFeature>())
-                                {
-                                    if (Model.CommentsFeature?.IsEnabled == true)
-                                    {
-                                        @await Component.InvokeAsync(typeof(DefaultBlogPostCommentViewComponent), new
-                                        {
-                                            entityType = Volo.CmsKit.Blogs.BlogPostConsts.EntityType,
-                                            entityId = Model.ViewModel.Id.ToString()
-                                        })
-                                    }
-                                } 
-
-                    </div>
-                </abp-row>
+        <abp-row>
+            <div class="col">
+                @if (GlobalFeatureManager.Instance.IsEnabled<CommentsFeature>())
+                {
+                    if (Model.CommentsFeature?.IsEnabled == true)
+                    {
+                        @await Component.InvokeAsync(typeof(DefaultBlogPostCommentViewComponent), new
+                        {
+                            entityType = Volo.CmsKit.Blogs.BlogPostConsts.EntityType,
+                            entityId = Model.ViewModel.Id.ToString()
+                        })
+                    }
+                } 
+            </div>
+        </abp-row>
     </div>
-
-
 </div>

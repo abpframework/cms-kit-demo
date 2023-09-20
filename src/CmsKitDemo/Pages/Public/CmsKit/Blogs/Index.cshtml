@@ -47,7 +47,7 @@
 <abp-row id="blogs-container">
     @foreach (var blog in Model.Blogs.Items)
     {
-        <abp-column size="_12" size-md="_6" size-lg="_4">
+        <abp-column size="_12" size-md="_6" size-lg="_4" class="blog-post-item">
             <abp-card class="card-link">
                 @if (blog.CoverImageMediaId != null)
                 {
