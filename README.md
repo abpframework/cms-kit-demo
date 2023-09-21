@@ -1,6 +1,6 @@
 # CMS Kit Demo
 
-This is a sample application designed to demonstrate the capabilities of the ABP Framework's [CMS Kit Module](https://docs.abp.io/en/abp/latest/Modules/Cms-Kit/Index).
+This is a sample application designed to demonstrate the capabilities of the [ABP Framework](https://github.com/abpframework/abp)'s [CMS Kit Module](https://docs.abp.io/en/abp/latest/Modules/Cms-Kit/Index).
 
 ## Requirements
 
