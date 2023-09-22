@@ -57,6 +57,7 @@ using Volo.Abp.Threading;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Volo.CmsKit.Reactions;
 using Volo.CmsKit.Comments;
+using Volo.Abp.Data;
 
 namespace CmsKitDemo;
 
@@ -374,6 +375,8 @@ public class CmsKitDemoModule : AbpModule
         {
             app.UseErrorPage();
         }
+
+        app.UseMiddleware<DbMigrationMiddleware>();
 
         app.UseCorrelationId();
         app.UseStaticFiles();
