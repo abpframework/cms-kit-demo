@@ -12,5 +12,6 @@ RUN apt-get update && apt-get install -y libgdiplus
 WORKDIR /app
 EXPOSE 80
 COPY --from=base /src/CmsKitDemo.db .
+RUN chmod 666 /app/CmsKitDemo.db
 COPY --from=base /src/CmsKitDemo/bin/Release/publish .
 ENTRYPOINT ["dotnet", "CmsKitDemo.dll"]
