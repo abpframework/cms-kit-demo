@@ -21,7 +21,7 @@ variables:
   DOCKER_BUILDKIT: 1
 
 pool:
-  name: aks-deployer-agent
+  vmImage: 'ubuntu-latest'
 
 
 stages:
@@ -31,7 +31,7 @@ stages:
   - job: Build
     displayName: Package Helm Charts and Values
     pool:
-      name: aks-deployer-agent
+      vmImage: 'ubuntu-latest'
     steps:
     - checkout: self
     - checkout: devops
