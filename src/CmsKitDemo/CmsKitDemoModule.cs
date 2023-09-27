@@ -376,8 +376,6 @@ public class CmsKitDemoModule : AbpModule
             app.UseErrorPage();
         }
 
-        app.UseMiddleware<DbMigrationMiddleware>();
-
         app.UseCorrelationId();
         app.UseStaticFiles();
         app.UseRouting();

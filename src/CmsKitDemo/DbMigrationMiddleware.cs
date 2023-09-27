@@ -29,46 +29,9 @@ namespace CmsKitDemo
             {
                 ConnectionString = connString
             };
-            var newDatabaseFilePath = ((string)dbBuilder["Data Source"]).Trim();
-
-            if(ShouldCreateDemoDatabase(newDatabaseFilePath))
-            {
-                await CreateDemoDatabaseAsync(newDatabaseFilePath);
-            }
+           
 
             await next(context);
-        }
-
-        private string GetDefaultDbFilePath()
-        {
-            var dbFolder = _configuration["App:SqliteDbFolder"]?.EnsureEndsWith(Path.DirectorySeparatorChar);
-            
-            return $"{dbFolder}{_configuration["App:DefaultDbName"]}.db";
-        }
-
-        private bool ShouldCreateDemoDatabase(string dbFilePath)
-        {
-            if (!File.Exists(dbFilePath))
-            {
-                return true;
-            }
-
-            return new FileInfo(dbFilePath!).Length <= 0;
-        }
-
-        private async Task CreateDemoDatabaseAsync(string newDbFilePath)
-        {
-            try
-            {
-                var defaultDbFilePath = GetDefaultDbFilePath();
-
-                //copy the existing db file to the target 
-                File.Copy(defaultDbFilePath, newDbFilePath, overwrite: true);
-            }
-            catch(Exception ex)
-            {
-                //ignore
-            }
         }
     }
 
@@ -113,6 +76,11 @@ namespace CmsKitDemo
             var dbFilePath = $"{dbFolder}{demoUserId}.db";
             var connString = $"Data Source={dbFilePath};Mode=ReadWriteCreate;";
 
+            if (ShouldCreateDemoDatabase(dbFilePath))
+            {
+                await CreateDemoDatabaseAsync(dbFilePath);
+            }
+
             return connString;
         }
 
@@ -149,6 +117,39 @@ namespace CmsKitDemo
             };
 
             _httpContextAccessor.HttpContext?.Response.Cookies.Append(DemoUserCookieName, value, option);
+        }
+
+        private bool ShouldCreateDemoDatabase(string dbFilePath)
+        {
+            if (!File.Exists(dbFilePath))
+            {
+                return true;
+            }
+
+            return new FileInfo(dbFilePath!).Length <= 0;
+        }
+
+
+        private async Task CreateDemoDatabaseAsync(string newDbFilePath)
+        {
+            try
+            {
+                var defaultDbFilePath = GetDefaultDbFilePath();
+
+                //copy the existing db file to the target 
+                File.Copy(defaultDbFilePath, newDbFilePath, overwrite: true);
+            }
+            catch (Exception ex)
+            {
+                //ignore
+            }
+        }
+
+        private string GetDefaultDbFilePath()
+        {
+            var dbFolder = _configuration["App:SqliteDbFolder"]?.EnsureEndsWith(Path.DirectorySeparatorChar);
+
+            return $"{dbFolder}{_configuration["App:DefaultDbName"]}.db";
         }
     }
 }
