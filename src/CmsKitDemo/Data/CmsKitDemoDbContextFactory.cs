@@ -11,7 +11,7 @@ public class CmsKitDemoDbContextFactory : IDesignTimeDbContextFactory<CmsKitDemo
         var configuration = BuildConfiguration();
 
         var builder = new DbContextOptionsBuilder<CmsKitDemoDbContext>()
-            .UseSqlite(configuration.GetConnectionString("Default"));
+            .UseSqlite($"Data Source={dbFolder}{configuration["App:DefaultDbName"]}.db");
 
         return new CmsKitDemoDbContext(builder.Options);
     }
