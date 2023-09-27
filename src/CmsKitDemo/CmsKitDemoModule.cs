@@ -57,7 +57,7 @@ using Volo.Abp.Threading;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Volo.CmsKit.Reactions;
 using Volo.CmsKit.Comments;
-using Volo.Abp.Data;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace CmsKitDemo;
 
@@ -317,7 +317,8 @@ public class CmsKitDemoModule : AbpModule
         {
             options.Configure(configurationContext =>
             {
-                configurationContext.UseSqlite();
+                configurationContext.UseSqlite()
+                    .ReplaceService<IMethodCallTranslatorProvider, CmsKitDemoSqliteMethodCallTranslatorProvider>();
             });
         });
 

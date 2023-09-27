@@ -7,9 +7,8 @@ public class CmsKitDemoDbContextFactory : IDesignTimeDbContextFactory<CmsKitDemo
 {
     public CmsKitDemoDbContext CreateDbContext(string[] args)
     {
-        var configuration = BuildConfiguration();
 
-        var dbFolder = configuration["App:SqliteDbFolder"]?.EnsureEndsWith(Path.DirectorySeparatorChar);
+        var configuration = BuildConfiguration();
 
         var builder = new DbContextOptionsBuilder<CmsKitDemoDbContext>()
             .UseSqlite($"Data Source={dbFolder}{configuration["App:DefaultDbName"]}.db");
