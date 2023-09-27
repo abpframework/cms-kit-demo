@@ -12,7 +12,7 @@ public class CmsKitDemoDbContextFactory : IDesignTimeDbContextFactory<CmsKitDemo
         var dbFolder = configuration["App:SqliteDbFolder"]?.EnsureEndsWith(Path.DirectorySeparatorChar);
 
         var builder = new DbContextOptionsBuilder<CmsKitDemoDbContext>()
-            .UseSqlite($"{dbFolder}{configuration["App:DefaultDbName"]}.db");
+            .UseSqlite($"Data Source={dbFolder}{configuration["App:DefaultDbName"]}.db");
 
         return new CmsKitDemoDbContext(builder.Options);
     }

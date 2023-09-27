@@ -14,23 +14,26 @@ namespace CmsKitDemo
     {
         private readonly IConnectionStringResolver _connectionStringResolver;
         private readonly IConfiguration _configuration;
-        private readonly SemaphoreSlim _semaphore;
 
         public DbMigrationMiddleware(IConnectionStringResolver connectionStringResolver, IConfiguration configuration)
         {
             _connectionStringResolver = connectionStringResolver;
             _configuration = configuration;
-            _semaphore = new SemaphoreSlim(1, 1);
         }
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
             var connString = await _connectionStringResolver.ResolveAsync();
-            var dbFilePath = connString.Replace("Data Source=", "").Replace(";Cache=Shared", ""); ;
 
-            if(ShouldCreateDemoDatabase(dbFilePath))
+            var dbBuilder = new DbConnectionStringBuilder
             {
-                await CreateDemoDatabaseAsync(dbFilePath);
+                ConnectionString = connString
+            };
+            var newDatabaseFilePath = ((string)dbBuilder["Data Source"]).Trim();
+
+            if(ShouldCreateDemoDatabase(newDatabaseFilePath))
+            {
+                await CreateDemoDatabaseAsync(newDatabaseFilePath);
             }
 
             await next(context);
@@ -55,8 +58,6 @@ namespace CmsKitDemo
 
         private async Task CreateDemoDatabaseAsync(string newDbFilePath)
         {
-            await _semaphore.WaitAsync();
-
             try
             {
                 var defaultDbFilePath = GetDefaultDbFilePath();
@@ -68,37 +69,37 @@ namespace CmsKitDemo
             {
                 //ignore
             }
-            finally
-            {
-                _semaphore.Release();
-            }
         }
     }
 
     [Dependency(ReplaceServices = true)]
     public class DemoConnectionStringResolver : DefaultConnectionStringResolver
     {
-        private readonly IConfiguration _configuration;
-        private readonly IMyResolver _resolver;
+        public const string DemoUserCookieName = "CmsKitDemoUser";
 
-        public DemoConnectionStringResolver(IOptionsMonitor<AbpDbConnectionOptions> options, IConfiguration configuration, IMyResolver resolver) : base(options)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IGuidGenerator _guidGenerator;
+        private readonly IConfiguration _configuration;
+
+        public DemoConnectionStringResolver(IOptionsMonitor<AbpDbConnectionOptions> options, IConfiguration configuration, IHttpContextAccessor httpContextAccessor, IGuidGenerator guidGenerator) : base(options)
         {
             _configuration = configuration;
-            _resolver = resolver;
+            _httpContextAccessor = httpContextAccessor;
+            _guidGenerator = guidGenerator;
         }
 
         [Obsolete("Use ResolveAsync method.")]
-        public override string Resolve(string connectionStringName = null)
+        public override string Resolve(string connectionStringName)
         {
             return AsyncHelper.RunSync(() => ResolveInternalAsync(connectionStringName));
         }
 
-        public async override Task<string> ResolveAsync(string connectionStringName = null)
+        public async override Task<string> ResolveAsync(string connectionStringName)
         {
             return await ResolveInternalAsync(connectionStringName);
         }
 
-        private async Task<string> ResolveInternalAsync(string connectionStringName = null)
+        private async Task<string> ResolveInternalAsync(string connectionStringName)
         {
             var dbFolder = _configuration["App:SqliteDbFolder"]?.EnsureEndsWith(Path.DirectorySeparatorChar);
             if (dbFolder.IsNullOrWhiteSpace())
@@ -106,33 +107,13 @@ namespace CmsKitDemo
                 return await base.ResolveAsync(connectionStringName);
             }
 
-            string demoUserId = _configuration["App:DefaultDbName"]!;
-            //string demoUserId = _resolver.GetDemoUserIdOrNull() ?? _configuration["App:DefaultDbName"]!;
+            //string demoUserId = _configuration["App:DefaultDbName"]!;
+            string demoUserId = GetDemoUserIdOrNull() ?? _configuration["App:DefaultDbName"]!;
 
             var dbFilePath = $"{dbFolder}{demoUserId}.db";
-            var connString = $"Data Source={dbFilePath};Cache=Shared";
+            var connString = $"Data Source={dbFilePath};Mode=ReadWriteCreate;";
 
             return connString;
-        }
-    }
-
-    public interface IMyResolver : ITransientDependency
-    {
-        public string GetDemoUserIdOrNull();
-    }
-
-    public class MyResolver : IMyResolver, ITransientDependency
-    {
-        public const string DemoUserCookieName = "CmsKitDemoUser";
-
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IGuidGenerator _guidGenerator;
-
-
-        public MyResolver(IHttpContextAccessor httpContextAccessor, IGuidGenerator guidGenerator)
-        {
-            _httpContextAccessor = httpContextAccessor;
-            _guidGenerator = guidGenerator;
         }
 
         public string GetDemoUserIdOrNull()
