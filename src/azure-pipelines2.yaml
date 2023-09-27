@@ -40,7 +40,7 @@ stages:
         dotnet tool install -g Volo.Abp.Cli
         export PATH="$PATH:/root/.dotnet/tools"
         abp --version
-        cd $(solutionDir)/src/AbpCommercialTest.Web && abp install-libs
+        cd $(solutionDir)/CmsKitDemo && abp install-libs
       displayName: 'Install ABP CLI'
 
     - script: |
