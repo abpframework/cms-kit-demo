@@ -8,7 +8,13 @@ This is a sample application designed to demonstrate the capabilities of the [AB
 
 ## How to run?
 
-This application uses SQLite as the database and the database can be found in the solution folder. Therefore, you don't need to create the database and instead, you can directly run the `CmsKitDemo` project to see the application.
+Before running the application, you should run the following command in the `CmsKitDemo` folder to install all NPM packages for the application:
+
+```bash
+abp install-libs
+```
+
+After installing the NPM packages, you can directly run the `CmsKitDemo` project to see the application. This application uses SQLite as the database and the database can be found in the solution folder. Therefore, you don't need to create the database manually.
 
 > Default credentials: `admin` as username and `1q2w3E*` as the password.
 
