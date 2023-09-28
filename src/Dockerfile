@@ -9,9 +9,8 @@ RUN dotnet publish -c Release -o bin/Release/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:7.0-bullseye-slim AS final
 RUN apt-get update && apt-get install -y libgdiplus
-WORKDIR /app/sqliteDbs
-COPY --from=base /src/CmsKitDemo/sqliteDbs/ .
 WORKDIR /app
 EXPOSE 80
+COPY --from=base /src/CmsKitDemo.db .
 COPY --from=base /src/CmsKitDemo/bin/Release/publish .
 ENTRYPOINT ["dotnet", "CmsKitDemo.dll"]
