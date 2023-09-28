@@ -13,5 +13,5 @@ WORKDIR /app
 EXPOSE 80
 COPY --from=base /src/CmsKitDemo.db .
 COPY --from=base /src/CmsKitDemo/bin/Release/publish .
-ENV ConnectionStrings__Default=Data Source=CmsKitDemo.db;Version=3;
+ENV ConnectionStrings__Default=Data Source=/app/CmsKitDemo.db;Version=3;
 ENTRYPOINT ["dotnet", "CmsKitDemo.dll"]
