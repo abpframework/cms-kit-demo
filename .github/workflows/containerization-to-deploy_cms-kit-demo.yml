@@ -28,6 +28,9 @@ jobs:
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
+      - name: Copy CmsKitDemo.db to publish directory
+        run: cp src/CmsKitDemo.db ${{env.DOTNET_ROOT}}/myapp
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
