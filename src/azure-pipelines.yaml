@@ -1,0 +1,74 @@
+trigger:
+  tags:
+    include:
+      - "*.*.*"
+
+resources:
+  repositories:
+    - repository: devops
+      type: github
+      endpoint: github.com_skoc10
+      name: volosoft/devops
+      ref: master
+
+variables:
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: 'volosoft-reg'
+  # workDir: '/home/ubuntu/ws/1/s'
+  solutionDir: '$(Build.SourcesDirectory)/cms-kit-demo/src'
+  # tag: $[replace(variables['Build.SourceBranch'], 'refs/tags/', '')]
+  tag: $(Build.BuildNumber)
+  DOCKER_BUILDKIT: 1
+
+pool:
+  name: aks-deployer-agent
+
+
+stages:
+- stage: Package
+  displayName: Package
+  jobs:
+  - job: Build
+    displayName: Package Helm Charts and Values
+    pool:
+      name: aks-deployer-agent
+    steps:
+    - checkout: self
+    - checkout: devops
+
+    - task: Docker@2
+      displayName: 'Build Docker Image'
+      inputs:
+        containerRegistry: $(dockerRegistryServiceConnection)
+        repository: 'demo/cms-kit-demo.abp.io'
+        command: 'build'
+        Dockerfile: '$(solutionDir)/Dockerfile.azure'
+        tags: |
+          $(tag)
+
+    - task: Docker@2
+      displayName: Push Docker Image
+      inputs:
+        containerRegistry: $(dockerRegistryServiceConnection)
+        repository: 'demo/cms-kit-demo.abp.io'
+        command: 'push'
+        tags: |
+          $(tag)
+
+    - bash: |
+        mkdir -p $(Build.SourcesDirectory)/devops/aks/versions
+
+
+        cat <<EOF > $(Build.SourcesDirectory)/devops/aks/versions/cms-kit-demo-version.yaml
+        image:
+          repository: volosoft.azurecr.io/demo/cms-kit-demo.abp.io
+          tag: "$(tag)"
+        EOF
+
+        cat $(Build.SourcesDirectory)/devops/aks/versions/cms-kit-demo-version.yaml >> $(Build.SourcesDirectory)/devops/aks/helm/values/app/demo/cms-kit-demo.yaml
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: cms-kit-demo'
+      inputs:
+        PathtoPublish: '$(Build.SourcesDirectory)/devops/aks/helm'
+        ArtifactName: 'cms-kit-demo'
