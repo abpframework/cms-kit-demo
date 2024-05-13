@@ -10,7 +10,7 @@ RUN dotnet publish -c Release -o bin/Release/publish
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS final
 RUN apt-get update && apt-get install -y libgdiplus
 WORKDIR /app
-COPY --from=base /src/CmsKitDemo.db .
+COPY --from=base /src/CmsKitDemo/CmsKitDemoDb/CmsKitDemo.db ./CmsKitDemoDb/CmsKitDemo.db
 WORKDIR /app
 EXPOSE 80
 COPY --from=base /src/CmsKitDemo/bin/Release/publish .
