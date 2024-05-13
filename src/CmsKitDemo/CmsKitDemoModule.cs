@@ -55,6 +55,8 @@ using Volo.CmsKit.EntityFrameworkCore;
 using Volo.CmsKit.Web;
 using Volo.Abp.Threading;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Volo.Abp.Data;
+using Volo.Abp.IO;
 using Volo.CmsKit.Reactions;
 using Volo.CmsKit.Comments;
 using Microsoft.EntityFrameworkCore.Query;
@@ -360,6 +362,13 @@ public class CmsKitDemoModule : AbpModule
         });
     }
 
+    public override async Task OnPreApplicationInitializationAsync(ApplicationInitializationContext context)
+    {
+        DirectoryHelper.CreateIfNotExists(context.GetConfiguration()["App:DbFolderName"] ?? "CmsKitDemoDb");
+        var connString = await context.ServiceProvider.GetRequiredService<IConnectionStringResolver>().ResolveAsync();
+        await context.ServiceProvider.GetRequiredService<CmsKitDemoDbMigrationService>().MigrateAsync(connString);
+    }
+
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
     {
         var app = context.GetApplicationBuilder();
@@ -376,6 +385,8 @@ public class CmsKitDemoModule : AbpModule
         {
             app.UseErrorPage();
         }
+
+        app.UseMiddleware<DbMigrationMiddleware>();
 
         app.UseCorrelationId();
         app.UseStaticFiles();

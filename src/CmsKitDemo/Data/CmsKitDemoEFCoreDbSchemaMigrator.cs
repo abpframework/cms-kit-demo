@@ -7,23 +7,26 @@ public class CmsKitDemoEFCoreDbSchemaMigrator : ITransientDependency
 {
     private readonly IServiceProvider _serviceProvider;
 
-    public CmsKitDemoEFCoreDbSchemaMigrator(
-        IServiceProvider serviceProvider)
+    public CmsKitDemoEFCoreDbSchemaMigrator(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
     }
 
-    public async Task MigrateAsync()
+    public async Task MigrateAsync(string? connectionString = null)
     {
-        /* We intentionally resolve the CmsKitDemoDbContext
-         * from IServiceProvider (instead of directly injecting it)
-         * to properly get the connection string of the current tenant in the
-         * current scope.
-         */
+        if (connectionString.IsNullOrWhiteSpace())
+        {
+            await _serviceProvider.GetRequiredService<CmsKitDemoDbContext>().Database.MigrateAsync();
+            return;
+        }
 
-        await _serviceProvider
-            .GetRequiredService<CmsKitDemoDbContext>()
-            .Database
-            .MigrateAsync();
+        var options = new DbContextOptionsBuilder<CmsKitDemoDbContext>()
+                .UseSqlite(connectionString)
+                .Options;
+        
+        using (var dbContext = new CmsKitDemoDbContext(options))
+        {
+            await dbContext.Database.MigrateAsync();
+        }
     }
 }
