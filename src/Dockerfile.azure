@@ -11,7 +11,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS final
 RUN apt-get update && apt-get install -y libgdiplus
 WORKDIR /app
 COPY --from=base /src/CmsKitDemo/CmsKitDemoDb/CmsKitDemo.db ./CmsKitDemoDb/CmsKitDemo.db
-WORKDIR /app
 EXPOSE 80
+ENV ASPNETCORE_URLS=http://+:80
 COPY --from=base /src/CmsKitDemo/bin/Release/publish .
 ENTRYPOINT ["dotnet", "CmsKitDemo.dll"]
