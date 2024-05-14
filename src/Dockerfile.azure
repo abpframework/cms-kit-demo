@@ -7,7 +7,7 @@ COPY --from=nodebase /usr/local/lib /usr/local/lib
 
 WORKDIR /src
 COPY . .
-RUN dotnet tool install -g volo.abp.cli 
+RUN dotnet tool install -g volo.abp.cli --version 7.4.3
 ENV PATH="${PATH}:/root/.dotnet/tools"
 WORKDIR /src/CmsKitDemo
 RUN abp install-libs
