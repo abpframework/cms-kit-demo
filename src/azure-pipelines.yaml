@@ -41,7 +41,8 @@ stages:
       inputs:
         containerRegistry: $(dockerRegistryServiceConnection)
         repository: 'demo/cms-kit-demo.abp.io'
-        command: 'build --no-cache'
+        command: 'build'
+        arguments: 'no-cache'
         Dockerfile: '$(solutionDir)/Dockerfile.azure'
         tags: |
           $(tag)
