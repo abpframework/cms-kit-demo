@@ -43,8 +43,11 @@ public class CmsKitConnectionStringResolver : DefaultConnectionStringResolver
         var demoUserId = _demoNameResolver.GetDemoUserIdOrNull() ?? _configuration["App:DefaultDbName"];
 
         var dbFilePath = $"{dbFolder}{demoUserId}.db";
-        var connString = $"Data Source={dbFilePath};Cache=Shared";
+        if (!File.Exists(dbFilePath))
+        {            
+            File.Copy(_configuration["App:DbFolderName"]?.EnsureEndsWith(Path.DirectorySeparatorChar) + _configuration["App:DefaultDbName"] + ".db", dbFilePath);
+        }
 
-        return connString;
+        return $"Data Source={dbFilePath};Cache=Shared";
     }
 }
