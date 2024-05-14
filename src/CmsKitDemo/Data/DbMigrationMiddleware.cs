@@ -19,10 +19,11 @@ public class DbMigrationMiddleware : IMiddleware, ITransientDependency
     {
         var connString = await _connectionStringResolver.ResolveAsync();
         var dbFilePath = connString.Replace("Data Source=", "").Replace(";Cache=Shared", "");
-            
-        if (ShouldCreateUserDb(context, dbFilePath))
+        
+        if (ShouldCreateUserDb(context, dbFilePath) || !context.Request.Cookies.ContainsKey("CMSKitDemoDbMigrated"))
         {
             await _dbMigrationService.MigrateAsync(connString);
+            context.Response.Cookies.Append("CMSKitDemoDbMigrated", "true");
         }
             
         await next(context);
