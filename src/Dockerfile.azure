@@ -1,0 +1,22 @@
+FROM node:16 AS nodebase
+
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS base
+
+COPY --from=nodebase /usr/local/bin /usr/local/bin
+COPY --from=nodebase /usr/local/lib /usr/local/lib
+
+WORKDIR /src
+COPY . .
+RUN dotnet tool install -g volo.abp.cli --version 7.4.3
+ENV PATH="${PATH}:/root/.dotnet/tools"
+WORKDIR /src/CmsKitDemo
+RUN abp install-libs
+RUN dotnet publish -c Release -o bin/Release/publish
+
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS final
+RUN apt-get update && apt-get install -y libgdiplus
+WORKDIR /app
+COPY --from=base /src/CmsKitDemo/CmsKitDemoDb/CmsKitDemo.db /app/CmsKitDemoDb/CmsKitDemo.db
+EXPOSE 80
+COPY --from=base /src/CmsKitDemo/bin/Release/publish .
+ENTRYPOINT ["dotnet", "CmsKitDemo.dll"]

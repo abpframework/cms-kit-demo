@@ -17,23 +17,73 @@ public class CmsKitDemoDbMigrationService : ITransientDependency
     private readonly CmsKitDemoEFCoreDbSchemaMigrator _dbSchemaMigrator;
     private readonly ITenantRepository _tenantRepository;
     private readonly ICurrentTenant _currentTenant;
+    private readonly IConfiguration _configuration;
 
     public CmsKitDemoDbMigrationService(
         IDataSeeder dataSeeder,
         CmsKitDemoEFCoreDbSchemaMigrator dbSchemaMigrator,
         ITenantRepository tenantRepository,
-        ICurrentTenant currentTenant)
+        ICurrentTenant currentTenant, 
+        IConfiguration configuration)
     {
         _dataSeeder = dataSeeder;
         _dbSchemaMigrator = dbSchemaMigrator;
         _tenantRepository = tenantRepository;
         _currentTenant = currentTenant;
+        _configuration = configuration;
 
         Logger = NullLogger<CmsKitDemoDbMigrationService>.Instance;
     }
-
-    public async Task MigrateAsync()
+    
+    private async Task MigrateHostDatabaseAsync(string connectionString)
     {
+        Logger.LogInformation("Migrating host database schema...");
+
+        if (!connectionString.Contains(_configuration["App:DefaultDbName"] + ".db"))
+        {
+            TryToCopyFromDefaultDb(connectionString);
+        }
+        else
+        {
+            await _dbSchemaMigrator.MigrateAsync(connectionString);
+        }
+
+        Logger.LogInformation("Executing host database seed...");
+
+        await _dataSeeder.SeedAsync(
+            new DataSeedContext()
+                .WithProperty("AdminPassword", "123456")
+        );
+
+        Logger.LogInformation("Successfully completed host database migrations.");
+    }
+
+    private void TryToCopyFromDefaultDb(string connectionString)
+    {
+        try
+        {
+            var filePath = connectionString!.Replace("Data Source=", "").Split(";")[0];
+            File.Copy(_configuration["App:DbFolderName"]?.EnsureEndsWith(Path.DirectorySeparatorChar) + _configuration["App:DefaultDbName"] + ".db", filePath);
+        }
+        catch
+        {
+            //...
+        }
+    }
+
+    public async Task MigrateAsync(string? connectionString = null)
+    {
+        if (!connectionString.IsNullOrWhiteSpace())
+        {
+            Logger.LogInformation("Started database migrations...");
+
+            await MigrateHostDatabaseAsync(connectionString!);
+
+            Logger.LogInformation("Successfully completed database migrations.");
+            
+            return;
+        }
+        
         var initialMigrationAdded = AddInitialMigrationIfNotExist();
 
         if (initialMigrationAdded)

@@ -1,6 +1,7 @@
 ﻿@page
 @using Microsoft.AspNetCore.Mvc.Localization
 @using CmsKitDemo.Localization
+@using Volo.Abp.Data;
 @inject IHtmlLocalizer<CmsKitDemoResource> L
 @model CmsKitDemo.Pages.IndexModel
 
@@ -32,7 +33,6 @@
                     </div>
                     <div class="col-lg-9 col-md-7 col-12 d-flex align-items-center"> 
                         <div class="ps-md-3 text-center text-md-start">
-                            <h6 class="mb-0">ABP Framework</h6>
                             <h1>CMS Kit Module</h1>
                             <p class="pd-title mb-4">This module provides CMS (Content Management System) capabilities for your application.</p>
                             <a href="https://docs.abp.io/en/abp/latest/Modules/Cms-Kit/Index" target="_blank" class="btn btn-primary btn-lg product-btn">Documentation</a>
