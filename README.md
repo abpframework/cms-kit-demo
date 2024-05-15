@@ -52,4 +52,4 @@ Custom implementation (image gallery) with CMS Kit’s [Comment](https://docs.ab
 
 ## See live
 
-This application will be available live soon at [cms-kit-demo.abp.io](https://cms-kit-demo.abp.io).
+This application is live at [cms-kit-demo.abpdemo.com](https://cms-kit-demo.abpdemo.com/).
