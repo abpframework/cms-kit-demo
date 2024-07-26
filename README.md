@@ -1,6 +1,6 @@
 # CMS Kit Demo
 
-This is a sample application designed to demonstrate the capabilities of the [ABP Framework](https://github.com/abpframework/abp)'s [CMS Kit Module](https://docs.abp.io/en/abp/latest/Modules/Cms-Kit/Index).
+This is a sample application designed to demonstrate the capabilities of the [ABP](https://github.com/abpframework/abp)'s [CMS Kit Module](https://abp.io/docs/latest/modules/cms-kit/index).
 
 ## Requirements
 
@@ -22,13 +22,13 @@ After installing the NPM packages, you can directly run the `CmsKitDemo` project
 
 ### Homepage
 
-The application menu items (gallery, blog, ...) are created & ordered dynamically with [CMS Kit's Menu System](https://docs.abp.io/en/abp/latest/Modules/Cms-Kit/Menus):
+The application menu items (gallery, blog, ...) are created & ordered dynamically with [CMS Kit's Menu System](https://abp.io/docs/latest/Modules/Cms-Kit/Menus):
 
 ![homepage](assets/images/homepage.png)
 
 ### Image Gallery
 
-Custom implementation (image gallery) with CMS Kit’s [Comment](https://docs.abp.io/en/abp/latest/Modules/Cms-Kit/Comments) & [Reaction](https://docs.abp.io/en/abp/latest/Modules/Cms-Kit/Reactions) Features integrated:
+Custom implementation (image gallery) with CMS Kit’s [Comment](https://abp.io/docs/latest/Modules/Cms-Kit/Comments) & [Reaction](https://abp.io/docs/latest/Modules/Cms-Kit/Reactions) Features integrated:
 
 | Gallery | Detail Page  |
 |------------------------ |-----------------------|
@@ -36,7 +36,7 @@ Custom implementation (image gallery) with CMS Kit’s [Comment](https://docs.ab
 
 ### Blog & Blog Posts
 
-[Blogging Feature](https://docs.abp.io/en/abp/latest/Modules/Cms-Kit/Blogging) (with [Ratings](https://docs.abp.io/en/abp/latest/Modules/Cms-Kit/Ratings), [Comments](https://docs.abp.io/en/abp/latest/Modules/Cms-Kit/Comments), [Tags](https://docs.abp.io/en/abp/latest/Modules/Cms-Kit/Tags), and [Reactions](https://docs.abp.io/en/abp/latest/Modules/Cms-Kit/Reactions) features as enabled):
+[Blogging Feature](https://abp.io/docs/latest/Modules/Cms-Kit/Blogging) (with [Ratings](https://abp.io/docs/latest/Modules/Cms-Kit/Ratings), [Comments](https://abp.io/docs/latest/Modules/Cms-Kit/Comments), [Tags](https://abp.io/docs/latest/Modules/Cms-Kit/Tags), and [Reactions](https://abp.io/docs/latest/Modules/Cms-Kit/Reactions) features as enabled):
 
 | Blog | Blog Post  |
 |------------------------ |-----------------------|
@@ -44,7 +44,7 @@ Custom implementation (image gallery) with CMS Kit’s [Comment](https://docs.ab
 
 ### Products pages
 
-*Our Team* and *Products* uses the [Pages Feature](https://docs.abp.io/en/abp/latest/Modules/Cms-Kit/Pages) of the CMS Kit Module (with dynamic content, styles & scripts):
+*Our Team* and *Products* uses the [Pages Feature](https://abp.io/docs/latest/Modules/Cms-Kit/Pages) of the CMS Kit Module (with dynamic content, styles & scripts):
 
 | products/abp-commercial | products/aspnet-zero  |
 |------------------------ |-----------------------|

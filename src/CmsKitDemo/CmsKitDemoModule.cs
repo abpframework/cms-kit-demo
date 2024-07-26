@@ -64,7 +64,7 @@ using Microsoft.EntityFrameworkCore.Query;
 namespace CmsKitDemo;
 
 [DependsOn(
-    // ABP Framework packages
+    // ABP - Core framework packages
     typeof(AbpAspNetCoreMvcModule),
     typeof(AbpAutofacModule),
     typeof(AbpAutoMapperModule),
@@ -310,7 +310,7 @@ public class CmsKitDemoModule : AbpModule
         {
             /* You can remove "includeAllEntities: true" to create
              * default repositories only for aggregate roots
-             * Documentation: https://docs.abp.io/en/abp/latest/Entity-Framework-Core#add-default-repositories
+             * Documentation: https://abp.io/docs/latest/framework/data/entity-framework-core#add-default-repositories
              */
             options.AddDefaultRepositories(includeAllEntities: true);
         });
