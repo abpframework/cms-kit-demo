@@ -2,6 +2,10 @@
 
 This is a sample application designed to demonstrate the capabilities of the [ABP](https://github.com/abpframework/abp)'s [CMS Kit Module](https://abp.io/docs/latest/modules/cms-kit/index).
 
+## Live Demo
+
+You can see the [live demo here](https://cms-kit-demo.abp.io/).
+
 ## Requirements
 
 * .NET 7.0+
