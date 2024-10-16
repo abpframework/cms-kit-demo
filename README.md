@@ -4,7 +4,7 @@ This is a sample application designed to demonstrate the capabilities of the [AB
 
 ## Live Demo
 
-You can see the [live demo here](https://cms-kit-demo.abp.io/).
+You can see the [live demo here](https://cms-kit-demo.abpdemo.com/).
 
 ## Requirements
 
@@ -54,6 +54,3 @@ Custom implementation (image gallery) with CMS Kit’s [Comment](https://abp.io/
 |------------------------ |-----------------------|
 | ![](assets/images/products-abp-commercial.png) | ![](assets/images/products-aspnetzero.png)  |
 
-## See live
-
-This application is live at [cms-kit-demo.abpdemo.com](https://cms-kit-demo.abpdemo.com/).
