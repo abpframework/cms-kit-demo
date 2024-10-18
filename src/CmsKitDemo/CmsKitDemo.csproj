@@ -10,6 +10,9 @@
   <ItemGroup>
     <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
     <PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI" Version="7.0.2" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="7.0.2" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -84,7 +87,7 @@
     <PackageReference Include="Volo.CmsKit.HttpApi" Version="7.4.0-rc.2" />
     <PackageReference Include="Volo.CmsKit.Web" Version="7.4.0-rc.2" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.1">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
