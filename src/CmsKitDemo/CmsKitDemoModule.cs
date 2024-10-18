@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.OpenApi.Models;
 using CmsKitDemo.Data;
+using CmsKitDemo.HealthChecks;
 using CmsKitDemo.Localization;
 using CmsKitDemo.Menus;
 using OpenIddict.Validation.AspNetCore;
@@ -173,6 +174,7 @@ public class CmsKitDemoModule : AbpModule
         ConfigureEfCore(context);
         ConfigureRazorPages();
         ConfigureCmsKit(context);
+        ConfigureHealthChecks(context);
     }
 
     private void ConfigureAuthentication(ServiceConfigurationContext context)
@@ -358,7 +360,7 @@ public class CmsKitDemoModule : AbpModule
         Configure<CmsKitCommentOptions>(options =>
         {
             options.EntityTypes.Add(new CommentEntityTypeDefinition(CmsKitDemoConsts.ImageGalleryEntityType));
-            options.IsRecaptchaEnabled = true; 
+            options.IsRecaptchaEnabled = true;
         });
     }
 
@@ -367,6 +369,11 @@ public class CmsKitDemoModule : AbpModule
         DirectoryHelper.CreateIfNotExists(context.GetConfiguration()["App:DbFolderName"] ?? "CmsKitDemoDb");
         var connString = await context.ServiceProvider.GetRequiredService<IConnectionStringResolver>().ResolveAsync();
         await context.ServiceProvider.GetRequiredService<CmsKitDemoDbMigrationService>().MigrateAsync(connString);
+    }
+
+    private void ConfigureHealthChecks(ServiceConfigurationContext context)
+    {
+        context.Services.AddCmsKitDemoHealthChecks();
     }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
