@@ -5,6 +5,7 @@ using CmsKitDemo.Data;
 using CmsKitDemo.HealthChecks;
 using CmsKitDemo.Localization;
 using CmsKitDemo.Menus;
+using CmsKitDemo.Pages.Shared.Components.Footer;
 using OpenIddict.Validation.AspNetCore;
 using Volo.Abp;
 using Volo.Abp.Uow;
@@ -61,6 +62,7 @@ using Volo.Abp.IO;
 using Volo.CmsKit.Reactions;
 using Volo.CmsKit.Comments;
 using Microsoft.EntityFrameworkCore.Query;
+using Volo.Abp.Ui.LayoutHooks;
 
 namespace CmsKitDemo;
 
@@ -175,6 +177,14 @@ public class CmsKitDemoModule : AbpModule
         ConfigureRazorPages();
         ConfigureCmsKit(context);
         ConfigureHealthChecks(context);
+        
+        Configure<AbpLayoutHookOptions>(options =>
+        {
+            options.Add(
+                LayoutHooks.Body.Last,
+                typeof(CmsKitDemoFooterViewComponent)
+            );
+        });
     }
 
     private void ConfigureAuthentication(ServiceConfigurationContext context)
