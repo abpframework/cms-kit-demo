@@ -5,9 +5,9 @@
     
     if (platformVersion != null && dotnetVersion != null)
     {
-        <footer>
+        <footer class="mt-5">
             <div class="text-muted text-center" style="font-size: 0.9em;border-top: 1px solid #c6c6c6;padding: 10px">
-                Made with ❤️ on @($"ABP v{platformVersion.ProductVersion} & {dotnetVersion}"). Updated on @($"{platformVersion.ModificationDate.ToString("MMMM dd, yyyy, HH:mm")}")
+                Made with ❤️ on <strong>@($"ABP v{platformVersion.ProductVersion} & {dotnetVersion}")</strong>. Updated on <strong>@($"{platformVersion.ModificationDate.ToString("MMMM dd, yyyy, HH:mm")}")</strong>.
             </div>
         </footer>
 
