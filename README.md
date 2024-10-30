@@ -8,9 +8,7 @@ You can see the [live demo here](https://cms-kit-demo.abpdemo.com/).
 
 ## ABP Community Talks
 
-We've organized a community talk to show CMS Kit's capabilities and used this solution for demonstration. You can watch the community talk from here: 
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/S9__Hnu29tI?si=gizeZikgwUQ8b2Uc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+We've organized a community talk to show CMS Kit's capabilities and used this solution for demonstration. You can watch the community talk from here: https://www.youtube.com/watch?v=S9__Hnu29tI
 
 ## Requirements
 
