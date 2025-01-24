@@ -15,6 +15,7 @@ using Volo.CmsKit.Blogs;
 using Volo.CmsKit.Comments;
 using Volo.CmsKit.EntityFrameworkCore;
 using Volo.CmsKit.GlobalResources;
+using Volo.CmsKit.MarkedItems;
 using Volo.CmsKit.MediaDescriptors;
 using Volo.CmsKit.Menus;
 using Volo.CmsKit.Pages;
@@ -57,6 +58,8 @@ public class CmsKitDemoDbContext : AbpDbContext<CmsKitDemoDbContext>, ICmsKitDbC
     public DbSet<MenuItem> MenuItems { get; set; }
 
     public DbSet<GlobalResource> GlobalResources { get; set; }
+    
+    public DbSet<UserMarkedItem> UserMarkedItems { get; set; }
 
     #endregion
 

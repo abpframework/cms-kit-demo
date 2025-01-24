@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CmsKitDemo.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -43,6 +43,21 @@ namespace CmsKitDemo.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AbpAuditLogs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AbpBlobContainers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    TenantId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    ExtraProperties = table.Column<string>(type: "TEXT", nullable: false),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", maxLength: 40, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AbpBlobContainers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -256,6 +271,27 @@ namespace CmsKitDemo.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AbpSessions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    SessionId = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    Device = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    DeviceInfo = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    TenantId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    UserId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ClientId = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    IpAddresses = table.Column<string>(type: "TEXT", maxLength: 2048, nullable: true),
+                    SignedIn = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    LastAccessed = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    ExtraProperties = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AbpSessions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AbpSettingDefinitions",
                 columns: table => new
                 {
@@ -263,9 +299,9 @@ namespace CmsKitDemo.Migrations
                     Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
                     DisplayName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
                     Description = table.Column<string>(type: "TEXT", maxLength: 512, nullable: true),
-                    DefaultValue = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    DefaultValue = table.Column<string>(type: "TEXT", maxLength: 2048, nullable: true),
                     IsVisibleToClients = table.Column<bool>(type: "INTEGER", nullable: false),
-                    Providers = table.Column<string>(type: "TEXT", maxLength: 128, nullable: true),
+                    Providers = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: true),
                     IsInherited = table.Column<bool>(type: "INTEGER", nullable: false),
                     IsEncrypted = table.Column<bool>(type: "INTEGER", nullable: false),
                     ExtraProperties = table.Column<string>(type: "TEXT", nullable: true)
@@ -296,6 +332,7 @@ namespace CmsKitDemo.Migrations
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    NormalizedName = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
                     EntityVersion = table.Column<int>(type: "INTEGER", nullable: false),
                     ExtraProperties = table.Column<string>(type: "TEXT", nullable: false),
                     ConcurrencyStamp = table.Column<string>(type: "TEXT", maxLength: 40, nullable: false),
@@ -370,21 +407,320 @@ namespace CmsKitDemo.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CmsBlogFeatures",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    BlogId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    FeatureName = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    IsEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
+                    ExtraProperties = table.Column<string>(type: "TEXT", nullable: false),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", maxLength: 40, nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifierId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    DeletionTime = table.Column<DateTime>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CmsBlogFeatures", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CmsBlogs",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    Slug = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    TenantId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    ExtraProperties = table.Column<string>(type: "TEXT", nullable: false),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", maxLength: 40, nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifierId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    DeletionTime = table.Column<DateTime>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CmsBlogs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CmsComments",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    TenantId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    EntityType = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    EntityId = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    Text = table.Column<string>(type: "TEXT", maxLength: 512, nullable: false),
+                    RepliedCommentId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    CreatorId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Url = table.Column<string>(type: "TEXT", maxLength: 512, nullable: true),
+                    IdempotencyToken = table.Column<string>(type: "TEXT", maxLength: 32, nullable: true),
+                    IsApproved = table.Column<bool>(type: "INTEGER", nullable: true),
+                    ExtraProperties = table.Column<string>(type: "TEXT", nullable: false),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", maxLength: 40, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CmsComments", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CmsDemoImages",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: false),
+                    CoverImageMediaId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ExtraProperties = table.Column<string>(type: "TEXT", nullable: false),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", maxLength: 40, nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CmsDemoImages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CmsEntityTags",
+                columns: table => new
+                {
+                    TagId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    EntityId = table.Column<string>(type: "TEXT", nullable: false),
+                    TenantId = table.Column<Guid>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CmsEntityTags", x => new { x.EntityId, x.TagId });
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CmsGlobalResources",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    Value = table.Column<string>(type: "TEXT", maxLength: 2147483647, nullable: false),
+                    TenantId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    ExtraProperties = table.Column<string>(type: "TEXT", nullable: false),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", maxLength: 40, nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifierId = table.Column<Guid>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CmsGlobalResources", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CmsMediaDescriptors",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    TenantId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    EntityType = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 255, nullable: false),
+                    MimeType = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    Size = table.Column<long>(type: "INTEGER", maxLength: 2147483647, nullable: false),
+                    ExtraProperties = table.Column<string>(type: "TEXT", nullable: false),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", maxLength: 40, nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifierId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    DeletionTime = table.Column<DateTime>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CmsMediaDescriptors", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CmsMenuItems",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ParentId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    DisplayName = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Url = table.Column<string>(type: "TEXT", maxLength: 1024, nullable: false),
+                    Icon = table.Column<string>(type: "TEXT", nullable: true),
+                    Order = table.Column<int>(type: "INTEGER", nullable: false),
+                    Target = table.Column<string>(type: "TEXT", nullable: true),
+                    ElementId = table.Column<string>(type: "TEXT", nullable: true),
+                    CssClass = table.Column<string>(type: "TEXT", nullable: true),
+                    PageId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    TenantId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    ExtraProperties = table.Column<string>(type: "TEXT", nullable: false),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", maxLength: 40, nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifierId = table.Column<Guid>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CmsMenuItems", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CmsPages",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    TenantId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    Title = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    Slug = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    Content = table.Column<string>(type: "TEXT", maxLength: 2147483647, nullable: true),
+                    Script = table.Column<string>(type: "TEXT", nullable: true),
+                    Style = table.Column<string>(type: "TEXT", nullable: true),
+                    IsHomePage = table.Column<bool>(type: "INTEGER", nullable: false),
+                    EntityVersion = table.Column<int>(type: "INTEGER", nullable: false),
+                    LayoutName = table.Column<string>(type: "TEXT", nullable: true),
+                    ExtraProperties = table.Column<string>(type: "TEXT", nullable: false),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", maxLength: 40, nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifierId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    DeletionTime = table.Column<DateTime>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CmsPages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CmsRatings",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    TenantId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    EntityType = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    EntityId = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    StarCount = table.Column<short>(type: "INTEGER", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CmsRatings", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CmsTags",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    TenantId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    EntityType = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 32, nullable: false),
+                    ExtraProperties = table.Column<string>(type: "TEXT", nullable: false),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", maxLength: 40, nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifierId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    DeletionTime = table.Column<DateTime>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CmsTags", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CmsUserMarkedItems",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    TenantId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    CreatorId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    EntityId = table.Column<string>(type: "TEXT", nullable: false),
+                    EntityType = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CmsUserMarkedItems", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CmsUserReactions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    TenantId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    EntityType = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    EntityId = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    ReactionName = table.Column<string>(type: "TEXT", maxLength: 32, nullable: false),
+                    CreatorId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CmsUserReactions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CmsUsers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    TenantId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    Surname = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true),
+                    IsActive = table.Column<bool>(type: "INTEGER", nullable: false),
+                    EmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: false),
+                    PhoneNumber = table.Column<string>(type: "TEXT", maxLength: 16, nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: false),
+                    ExtraProperties = table.Column<string>(type: "TEXT", nullable: false),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", maxLength: 40, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CmsUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OpenIddictApplications",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ApplicationType = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
                     ClientId = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
                     ClientSecret = table.Column<string>(type: "TEXT", nullable: true),
+                    ClientType = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
                     ConsentType = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
                     DisplayName = table.Column<string>(type: "TEXT", nullable: true),
                     DisplayNames = table.Column<string>(type: "TEXT", nullable: true),
+                    JsonWebKeySet = table.Column<string>(type: "TEXT", nullable: true),
                     Permissions = table.Column<string>(type: "TEXT", nullable: true),
                     PostLogoutRedirectUris = table.Column<string>(type: "TEXT", nullable: true),
                     Properties = table.Column<string>(type: "TEXT", nullable: true),
                     RedirectUris = table.Column<string>(type: "TEXT", nullable: true),
                     Requirements = table.Column<string>(type: "TEXT", nullable: true),
-                    Type = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
+                    Settings = table.Column<string>(type: "TEXT", nullable: true),
                     ClientUri = table.Column<string>(type: "TEXT", nullable: true),
                     LogoUri = table.Column<string>(type: "TEXT", nullable: true),
                     ExtraProperties = table.Column<string>(type: "TEXT", nullable: false),
@@ -464,7 +800,7 @@ namespace CmsKitDemo.Migrations
                     ChangeTime = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ChangeType = table.Column<byte>(type: "INTEGER", nullable: false),
                     EntityTenantId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    EntityId = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
+                    EntityId = table.Column<string>(type: "TEXT", maxLength: 128, nullable: true),
                     EntityTypeFullName = table.Column<string>(type: "TEXT", maxLength: 128, nullable: false),
                     ExtraProperties = table.Column<string>(type: "TEXT", nullable: true)
                 },
@@ -475,6 +811,29 @@ namespace CmsKitDemo.Migrations
                         name: "FK_AbpEntityChanges_AbpAuditLogs_AuditLogId",
                         column: x => x.AuditLogId,
                         principalTable: "AbpAuditLogs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AbpBlobs",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ContainerId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    TenantId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    Content = table.Column<byte[]>(type: "BLOB", maxLength: 2147483647, nullable: true),
+                    ExtraProperties = table.Column<string>(type: "TEXT", nullable: false),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", maxLength: 40, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AbpBlobs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AbpBlobs_AbpBlobContainers_ContainerId",
+                        column: x => x.ContainerId,
+                        principalTable: "AbpBlobContainers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -662,6 +1021,42 @@ namespace CmsKitDemo.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CmsBlogPosts",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    BlogId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Title = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
+                    Slug = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
+                    ShortDescription = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    Content = table.Column<string>(type: "TEXT", maxLength: 2147483647, nullable: true),
+                    CoverImageMediaId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    TenantId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    AuthorId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Status = table.Column<int>(type: "INTEGER", nullable: false),
+                    EntityVersion = table.Column<int>(type: "INTEGER", nullable: false),
+                    ExtraProperties = table.Column<string>(type: "TEXT", nullable: false),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", maxLength: 40, nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    LastModifierId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    DeletionTime = table.Column<DateTime>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CmsBlogPosts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CmsBlogPosts_CmsUsers_AuthorId",
+                        column: x => x.AuthorId,
+                        principalTable: "CmsUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OpenIddictAuthorizations",
                 columns: table => new
                 {
@@ -674,14 +1069,7 @@ namespace CmsKitDemo.Migrations
                     Subject = table.Column<string>(type: "TEXT", maxLength: 400, nullable: true),
                     Type = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
                     ExtraProperties = table.Column<string>(type: "TEXT", nullable: false),
-                    ConcurrencyStamp = table.Column<string>(type: "TEXT", maxLength: 40, nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CreatorId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    LastModificationTime = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    LastModifierId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: false),
-                    DeleterId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    DeletionTime = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", maxLength: 40, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -733,14 +1121,7 @@ namespace CmsKitDemo.Migrations
                     Subject = table.Column<string>(type: "TEXT", maxLength: 400, nullable: true),
                     Type = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
                     ExtraProperties = table.Column<string>(type: "TEXT", nullable: false),
-                    ConcurrencyStamp = table.Column<string>(type: "TEXT", maxLength: 40, nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CreatorId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    LastModificationTime = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    LastModifierId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false, defaultValue: false),
-                    DeleterId = table.Column<Guid>(type: "TEXT", nullable: true),
-                    DeletionTime = table.Column<DateTime>(type: "TEXT", nullable: true)
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", maxLength: 40, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -776,6 +1157,21 @@ namespace CmsKitDemo.Migrations
                 name: "IX_AbpAuditLogs_TenantId_UserId_ExecutionTime",
                 table: "AbpAuditLogs",
                 columns: new[] { "TenantId", "UserId", "ExecutionTime" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AbpBlobContainers_TenantId_Name",
+                table: "AbpBlobContainers",
+                columns: new[] { "TenantId", "Name" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AbpBlobs_ContainerId",
+                table: "AbpBlobs",
+                column: "ContainerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AbpBlobs_TenantId_ContainerId_Name",
+                table: "AbpBlobs",
+                columns: new[] { "TenantId", "ContainerId", "Name" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AbpEntityChanges_AuditLogId",
@@ -890,6 +1286,21 @@ namespace CmsKitDemo.Migrations
                 columns: new[] { "TenantId", "UserId" });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AbpSessions_Device",
+                table: "AbpSessions",
+                column: "Device");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AbpSessions_SessionId",
+                table: "AbpSessions",
+                column: "SessionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AbpSessions_TenantId_UserId",
+                table: "AbpSessions",
+                columns: new[] { "TenantId", "UserId" });
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AbpSettingDefinitions_Name",
                 table: "AbpSettingDefinitions",
                 column: "Name",
@@ -905,6 +1316,11 @@ namespace CmsKitDemo.Migrations
                 name: "IX_AbpTenants_Name",
                 table: "AbpTenants",
                 column: "Name");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AbpTenants_NormalizedName",
+                table: "AbpTenants",
+                column: "NormalizedName");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AbpUserClaims_UserId",
@@ -947,6 +1363,76 @@ namespace CmsKitDemo.Migrations
                 column: "UserName");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CmsBlogPosts_AuthorId",
+                table: "CmsBlogPosts",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CmsBlogPosts_Slug_BlogId",
+                table: "CmsBlogPosts",
+                columns: new[] { "Slug", "BlogId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CmsComments_TenantId_EntityType_EntityId",
+                table: "CmsComments",
+                columns: new[] { "TenantId", "EntityType", "EntityId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CmsComments_TenantId_RepliedCommentId",
+                table: "CmsComments",
+                columns: new[] { "TenantId", "RepliedCommentId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CmsEntityTags_TenantId_EntityId_TagId",
+                table: "CmsEntityTags",
+                columns: new[] { "TenantId", "EntityId", "TagId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CmsPages_TenantId_Slug",
+                table: "CmsPages",
+                columns: new[] { "TenantId", "Slug" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CmsRatings_TenantId_EntityType_EntityId_CreatorId",
+                table: "CmsRatings",
+                columns: new[] { "TenantId", "EntityType", "EntityId", "CreatorId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CmsTags_TenantId_Name",
+                table: "CmsTags",
+                columns: new[] { "TenantId", "Name" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CmsUserMarkedItems_TenantId_CreatorId_EntityType_EntityId",
+                table: "CmsUserMarkedItems",
+                columns: new[] { "TenantId", "CreatorId", "EntityType", "EntityId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CmsUserMarkedItems_TenantId_EntityType_EntityId",
+                table: "CmsUserMarkedItems",
+                columns: new[] { "TenantId", "EntityType", "EntityId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CmsUserReactions_TenantId_CreatorId_EntityType_EntityId_ReactionName",
+                table: "CmsUserReactions",
+                columns: new[] { "TenantId", "CreatorId", "EntityType", "EntityId", "ReactionName" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CmsUserReactions_TenantId_EntityType_EntityId_ReactionName",
+                table: "CmsUserReactions",
+                columns: new[] { "TenantId", "EntityType", "EntityId", "ReactionName" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CmsUsers_TenantId_Email",
+                table: "CmsUsers",
+                columns: new[] { "TenantId", "Email" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CmsUsers_TenantId_UserName",
+                table: "CmsUsers",
+                columns: new[] { "TenantId", "UserName" });
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OpenIddictApplications_ClientId",
                 table: "OpenIddictApplications",
                 column: "ClientId");
@@ -982,6 +1468,9 @@ namespace CmsKitDemo.Migrations
         {
             migrationBuilder.DropTable(
                 name: "AbpAuditLogActions");
+
+            migrationBuilder.DropTable(
+                name: "AbpBlobs");
 
             migrationBuilder.DropTable(
                 name: "AbpClaimTypes");
@@ -1020,6 +1509,9 @@ namespace CmsKitDemo.Migrations
                 name: "AbpSecurityLogs");
 
             migrationBuilder.DropTable(
+                name: "AbpSessions");
+
+            migrationBuilder.DropTable(
                 name: "AbpSettingDefinitions");
 
             migrationBuilder.DropTable(
@@ -1047,10 +1539,55 @@ namespace CmsKitDemo.Migrations
                 name: "AbpUserTokens");
 
             migrationBuilder.DropTable(
+                name: "CmsBlogFeatures");
+
+            migrationBuilder.DropTable(
+                name: "CmsBlogPosts");
+
+            migrationBuilder.DropTable(
+                name: "CmsBlogs");
+
+            migrationBuilder.DropTable(
+                name: "CmsComments");
+
+            migrationBuilder.DropTable(
+                name: "CmsDemoImages");
+
+            migrationBuilder.DropTable(
+                name: "CmsEntityTags");
+
+            migrationBuilder.DropTable(
+                name: "CmsGlobalResources");
+
+            migrationBuilder.DropTable(
+                name: "CmsMediaDescriptors");
+
+            migrationBuilder.DropTable(
+                name: "CmsMenuItems");
+
+            migrationBuilder.DropTable(
+                name: "CmsPages");
+
+            migrationBuilder.DropTable(
+                name: "CmsRatings");
+
+            migrationBuilder.DropTable(
+                name: "CmsTags");
+
+            migrationBuilder.DropTable(
+                name: "CmsUserMarkedItems");
+
+            migrationBuilder.DropTable(
+                name: "CmsUserReactions");
+
+            migrationBuilder.DropTable(
                 name: "OpenIddictScopes");
 
             migrationBuilder.DropTable(
                 name: "OpenIddictTokens");
+
+            migrationBuilder.DropTable(
+                name: "AbpBlobContainers");
 
             migrationBuilder.DropTable(
                 name: "AbpEntityChanges");
@@ -1066,6 +1603,9 @@ namespace CmsKitDemo.Migrations
 
             migrationBuilder.DropTable(
                 name: "AbpUsers");
+
+            migrationBuilder.DropTable(
+                name: "CmsUsers");
 
             migrationBuilder.DropTable(
                 name: "OpenIddictAuthorizations");

@@ -18,7 +18,7 @@ namespace CmsKitDemo.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("_Abp_DatabaseProvider", EfCoreDatabaseProvider.Sqlite)
-                .HasAnnotation("ProductVersion", "7.0.1");
+                .HasAnnotation("ProductVersion", "9.0.0");
 
             modelBuilder.Entity("CmsKitDemo.Entities.GalleryImage", b =>
                 {
@@ -248,7 +248,6 @@ namespace CmsKitDemo.Migrations
                         .HasColumnName("ChangeType");
 
                     b.Property<string>("EntityId")
-                        .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("TEXT")
                         .HasColumnName("EntityId");
@@ -753,6 +752,62 @@ namespace CmsKitDemo.Migrations
                     b.ToTable("AbpSecurityLogs", (string)null);
                 });
 
+            modelBuilder.Entity("Volo.Abp.Identity.IdentitySession", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ClientId")
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Device")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DeviceInfo")
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ExtraProperties")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<string>("IpAddresses")
+                        .HasMaxLength(2048)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("LastAccessed")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("SessionId")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("SignedIn")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("TenantId");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Device");
+
+                    b.HasIndex("SessionId");
+
+                    b.HasIndex("TenantId", "UserId");
+
+                    b.ToTable("AbpSessions", (string)null);
+                });
+
             modelBuilder.Entity("Volo.Abp.Identity.IdentityUser", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1187,11 +1242,19 @@ namespace CmsKitDemo.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ApplicationType")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ClientId")
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ClientSecret")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ClientType")
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ClientUri")
@@ -1241,6 +1304,9 @@ namespace CmsKitDemo.Migrations
                         .HasDefaultValue(false)
                         .HasColumnName("IsDeleted");
 
+                    b.Property<string>("JsonWebKeySet")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime?>("LastModificationTime")
                         .HasColumnType("TEXT")
                         .HasColumnName("LastModificationTime");
@@ -1267,8 +1333,7 @@ namespace CmsKitDemo.Migrations
                     b.Property<string>("Requirements")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Type")
-                        .HasMaxLength(50)
+                    b.Property<string>("Settings")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -1297,40 +1362,10 @@ namespace CmsKitDemo.Migrations
                     b.Property<DateTime?>("CreationDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("CreationTime");
-
-                    b.Property<Guid?>("CreatorId")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("CreatorId");
-
-                    b.Property<Guid?>("DeleterId")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("DeleterId");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("DeletionTime");
-
                     b.Property<string>("ExtraProperties")
                         .IsRequired()
                         .HasColumnType("TEXT")
                         .HasColumnName("ExtraProperties");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(false)
-                        .HasColumnName("IsDeleted");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("LastModificationTime");
-
-                    b.Property<Guid?>("LastModifierId")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("LastModifierId");
 
                     b.Property<string>("Properties")
                         .HasColumnType("TEXT");
@@ -1456,22 +1491,6 @@ namespace CmsKitDemo.Migrations
                     b.Property<DateTime?>("CreationDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("CreationTime");
-
-                    b.Property<Guid?>("CreatorId")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("CreatorId");
-
-                    b.Property<Guid?>("DeleterId")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("DeleterId");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("DeletionTime");
-
                     b.Property<DateTime?>("ExpirationDate")
                         .HasColumnType("TEXT");
 
@@ -1479,20 +1498,6 @@ namespace CmsKitDemo.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT")
                         .HasColumnName("ExtraProperties");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasDefaultValue(false)
-                        .HasColumnName("IsDeleted");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("LastModificationTime");
-
-                    b.Property<Guid?>("LastModifierId")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("LastModifierId");
 
                     b.Property<string>("Payload")
                         .HasColumnType("TEXT");
@@ -1683,7 +1688,7 @@ namespace CmsKitDemo.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("DefaultValue")
-                        .HasMaxLength(256)
+                        .HasMaxLength(2048)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
@@ -1714,7 +1719,7 @@ namespace CmsKitDemo.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Providers")
-                        .HasMaxLength(128)
+                        .HasMaxLength(1024)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -1781,9 +1786,16 @@ namespace CmsKitDemo.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("NormalizedName")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Name");
+
+                    b.HasIndex("NormalizedName");
 
                     b.ToTable("AbpTenants", (string)null);
                 });
@@ -1810,7 +1822,6 @@ namespace CmsKitDemo.Migrations
             modelBuilder.Entity("Volo.CmsKit.Blogs.Blog", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -1877,7 +1888,6 @@ namespace CmsKitDemo.Migrations
             modelBuilder.Entity("Volo.CmsKit.Blogs.BlogFeature", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("BlogId")
@@ -1941,7 +1951,6 @@ namespace CmsKitDemo.Migrations
             modelBuilder.Entity("Volo.CmsKit.Blogs.BlogPost", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("AuthorId")
@@ -2035,7 +2044,6 @@ namespace CmsKitDemo.Migrations
             modelBuilder.Entity("Volo.CmsKit.Comments.Comment", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -2068,6 +2076,13 @@ namespace CmsKitDemo.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("ExtraProperties");
 
+                    b.Property<string>("IdempotencyToken")
+                        .HasMaxLength(32)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool?>("IsApproved")
+                        .HasColumnType("INTEGER");
+
                     b.Property<Guid?>("RepliedCommentId")
                         .HasColumnType("TEXT");
 
@@ -2096,7 +2111,6 @@ namespace CmsKitDemo.Migrations
             modelBuilder.Entity("Volo.CmsKit.GlobalResources.GlobalResource", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -2146,10 +2160,43 @@ namespace CmsKitDemo.Migrations
                     b.ToTable("CmsGlobalResources", (string)null);
                 });
 
+            modelBuilder.Entity("Volo.CmsKit.MarkedItems.UserMarkedItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid>("CreatorId")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<string>("EntityId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("EntityType")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("TenantId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TenantId", "EntityType", "EntityId");
+
+                    b.HasIndex("TenantId", "CreatorId", "EntityType", "EntityId");
+
+                    b.ToTable("CmsUserMarkedItems", (string)null);
+                });
+
             modelBuilder.Entity("Volo.CmsKit.MediaDescriptors.MediaDescriptor", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -2225,7 +2272,6 @@ namespace CmsKitDemo.Migrations
             modelBuilder.Entity("Volo.CmsKit.Menus.MenuItem", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -2302,7 +2348,6 @@ namespace CmsKitDemo.Migrations
             modelBuilder.Entity("Volo.CmsKit.Pages.Page", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -2357,6 +2402,9 @@ namespace CmsKitDemo.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("LastModifierId");
 
+                    b.Property<string>("LayoutName")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Script")
                         .HasColumnType("TEXT");
 
@@ -2387,7 +2435,6 @@ namespace CmsKitDemo.Migrations
             modelBuilder.Entity("Volo.CmsKit.Ratings.Rating", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreationTime")
@@ -2424,7 +2471,6 @@ namespace CmsKitDemo.Migrations
             modelBuilder.Entity("Volo.CmsKit.Reactions.UserReaction", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CreationTime")
@@ -2485,7 +2531,6 @@ namespace CmsKitDemo.Migrations
             modelBuilder.Entity("Volo.CmsKit.Tags.Tag", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -2554,7 +2599,6 @@ namespace CmsKitDemo.Migrations
             modelBuilder.Entity("Volo.CmsKit.Users.CmsUser", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ConcurrencyStamp")
