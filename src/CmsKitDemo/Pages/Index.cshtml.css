@@ -1,3 +1,7 @@
 ﻿.box-item {
     min-height: 280px;
 }
+
+a{
+    text-decoration: none;
+}
