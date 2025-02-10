@@ -50,9 +50,10 @@ public class CmsKitDemoDbMigrationService : ITransientDependency
 
         Logger.LogInformation("Executing host database seed...");
 
+        var defaultAdminPassword = _configuration["App:DefaultAdminPassword"];
         await _dataSeeder.SeedAsync(
             new DataSeedContext()
-                .WithProperty("AdminPassword", "123456")
+                .WithProperty("AdminPassword", defaultAdminPassword)
         );
 
         Logger.LogInformation("Successfully completed host database migrations.");

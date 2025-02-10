@@ -34,6 +34,11 @@ public class CmsKitLoginModel : LoginModel
 
     public override async Task<IActionResult> OnPostAsync(string action)
     {
+        if (LoginInput.UserNameOrEmailAddress is not (IdentityDataSeedContributor.AdminEmailDefaultValue or IdentityDataSeedContributor.AdminUserNameDefaultValue))
+        {
+            return await base.OnPostAsync(action);
+        }
+        
         await CheckLocalLoginAsync();
 
         ValidateModel();
@@ -44,15 +49,14 @@ public class CmsKitLoginModel : LoginModel
 
         await IdentityOptions.SetAsync();
 
-        if (_environment.IsProduction())
+        var user = await UserManager.FindByEmailAsync(LoginInput.UserNameOrEmailAddress) ?? await UserManager.FindByNameAsync(LoginInput.UserNameOrEmailAddress);
+
+        if (user == null || await UserManager.CheckPasswordAsync(user, LoginInput.Password))
         {
-            if(LoginInput.UserNameOrEmailAddress is IdentityDataSeedContributor.AdminEmailDefaultValue or IdentityDataSeedContributor.AdminUserNameDefaultValue)
-            {
-                Alerts.Danger("In this demo, access to the admin panel is disabled. If you want to see the admin panel, download the project from GitHub and run it yourself: https://github.com/abpframework/cms-kit-demo");
-                return Page();
-            }
+            return await base.OnPostAsync(action);
         }
         
-        return await base.OnPostAsync(action);
+        Alerts.Danger("In this demo, access to the admin panel is disabled. If you want to see the admin panel, download the project from GitHub and run it yourself: https://github.com/abpframework/cms-kit-demo");
+        return Page();
     }
 }
