@@ -12,7 +12,7 @@
     <abp-modal>
         <abp-modal-header title="@L["NewImage"].Value"></abp-modal-header>
         <abp-modal-body>
-            <abp-input asp-for="Image.Description" />
+            <abp-input asp-for="Image.Description" label="@L["Description"] *" />
             <img class="" loading="lazy" id="img-upload" alt="" />
             <input type="file" id="ImageFile" class="form-control" required />
             <abp-input asp-for="Image.CoverImageMediaId" type="hidden" required/>
