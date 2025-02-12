@@ -3,6 +3,7 @@ using System.Data.Common;
 using System.Net;
 using System.Text;
 using System.Text.Unicode;
+using CmsKitDemo.Data;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Guids;
@@ -29,7 +30,7 @@ namespace CmsKitDemo
             {
                 ConnectionString = connString
             };
-           
+            await context.RequestServices.GetRequiredService<CmsKitDemoDbMigrationService>().MigrateAsync(connString);
 
             await next(context);
         }
