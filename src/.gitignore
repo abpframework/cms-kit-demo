@@ -259,7 +259,5 @@ CmsKitDemo/Logs/*
 *.db-shm
 *.db-wal
 
-!CmsKitDemo.db
-
 # Use abp install-libs to restore.
 **/wwwroot/libs/*
