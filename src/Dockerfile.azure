@@ -1,4 +1,4 @@
-FROM node:16 AS nodebase
+FROM node:20 AS nodebase
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS base
 
