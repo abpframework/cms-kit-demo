@@ -7,6 +7,7 @@ public class CmsKitDemoDbContextFactory : IDesignTimeDbContextFactory<CmsKitDemo
 {
     public CmsKitDemoDbContext CreateDbContext(string[] args)
     {
+        CmsKitDemoGlobalFeatureConfigurator.Configure();
         var configuration = BuildConfiguration();
 
         var dbFolder = configuration["App:DbFolderName"]!.EnsureEndsWith(Path.DirectorySeparatorChar);

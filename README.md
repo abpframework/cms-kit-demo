@@ -12,7 +12,7 @@ We've organized a community talk to show CMS Kit's capabilities and used this so
 
 ## Requirements
 
-* .NET 7.0+
+* .NET 9.0+
 
 ## How to run?
 

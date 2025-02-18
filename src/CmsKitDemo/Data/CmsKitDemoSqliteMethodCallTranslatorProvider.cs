@@ -11,7 +11,8 @@ namespace CmsKitDemo.Data
 {
     public class CmsKitDemoSqliteMethodCallTranslatorProvider : SqliteMethodCallTranslatorProvider
     {
-        public CmsKitDemoSqliteMethodCallTranslatorProvider([NotNull] RelationalMethodCallTranslatorProviderDependencies dependencies)
+        public CmsKitDemoSqliteMethodCallTranslatorProvider(
+            [NotNull] RelationalMethodCallTranslatorProviderDependencies dependencies)
             : base(dependencies)
         {
             var sqlExpressionFactory = dependencies.SqlExpressionFactory;
@@ -19,9 +20,8 @@ namespace CmsKitDemo.Data
             AddTranslators(
                 new IMethodCallTranslator[]
                 {
-                new SqliteMathTranslator(sqlExpressionFactory),
-                new SqliteDateTimeAddTranslator(sqlExpressionFactory.As<SqliteSqlExpressionFactory>()),
-                new CmsKitDemoSqliteStringMethodTranslator(sqlExpressionFactory)
+                    new SqliteMathTranslator(sqlExpressionFactory),
+                    new CmsKitDemoSqliteStringMethodTranslator(sqlExpressionFactory)
                 });
         }
     }
@@ -38,7 +38,8 @@ namespace CmsKitDemo.Data
             _sqlExpressionFactory = sqlExpressionFactory;
         }
 
-        public override SqlExpression Translate(SqlExpression instance, MethodInfo method, IReadOnlyList<SqlExpression> arguments, IDiagnosticsLogger<DbLoggerCategory.Query> logger)
+        public override SqlExpression Translate(SqlExpression instance, MethodInfo method,
+            IReadOnlyList<SqlExpression> arguments, IDiagnosticsLogger<DbLoggerCategory.Query> logger)
         {
             Check.NotNull(method, nameof(method));
             Check.NotNull(arguments, nameof(arguments));
@@ -61,8 +62,10 @@ namespace CmsKitDemo.Data
                             "instr",
                             new[]
                             {
-                            _sqlExpressionFactory.Function("upper", new[]{instance}, false, new []{ false }, typeof(string)),
-                            _sqlExpressionFactory.Function("upper", new[]{pattern}, false, new []{ false }, typeof(string))
+                                _sqlExpressionFactory.Function("upper", new[] { instance }, false, new[] { false },
+                                    typeof(string)),
+                                _sqlExpressionFactory.Function("upper", new[] { pattern }, false, new[] { false },
+                                    typeof(string))
                             },
                             false,
                             new[] { false, false },

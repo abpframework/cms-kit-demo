@@ -1,7 +1,15 @@
 ﻿@page
 
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Alert
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Blockquote
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Card
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Grid
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Pagination
+@using Volo.Abp.AspNetCore.Mvc.UI.Bundling.TagHelpers
 @using Volo.CmsKit.Public.Web.Pages
 @using Volo.CmsKit.Public.Web.Pages.Public.CmsKit.Blogs
+@using Volo.CmsKit.Web
 
 @inherits CmsKitPublicPageBase
 
@@ -21,29 +29,43 @@
     const string dummyImageSource = "https://dummyimage.com/320x180/a3a3a3/fff.png";
 }
 
-<abp-row id="blogs-filter-area">
-    <abp-column size="_4">
-        <div class="mb-3">
-            <label class="form-label" asp-for="@Model.SelectedAuthor"></label>
+@if (Model.AuthorId.HasValue)
+{
+    <abp-row id="blogs-filter-area">
+        <abp-column size="_4">
+            <div class="mb-3">
+                <label class="form-label" asp-for="@Model.SelectedAuthor"></label>
 
-            <select id="AuthorSelect" asp-for="@Model.AuthorId"
-                    class="auto-complete-select"
-                    data-placeholder="@L["SelectAnAuthor"]"
-                    data-allow-clear="true"
-                    data-autocomplete-api-url="/api/cms-kit-public/blog-posts/authors"
-                    data-autocomplete-display-property="userName"
-                    data-autocomplete-value-property="id"
-                    data-autocomplete-items-property="items"
-                    data-autocomplete-filter-param-name="filter">
+                <select id="AuthorSelect" asp-for="@Model.AuthorId"
+                        class="auto-complete-select"
+                        data-placeholder="@L["SelectAnAuthor"]"
+                        data-allow-clear="true"
+                        data-autocomplete-api-url="/api/cms-kit-public/blog-posts/authors"
+                        data-autocomplete-display-property="userName"
+                        data-autocomplete-value-property="id"
+                        data-autocomplete-items-property="items"
+                        data-autocomplete-filter-param-name="filter">
 
-                @if (Model.SelectedAuthor != null)
-                {
-                    <option selected value="@Model.AuthorId" selected="selected">@Model.SelectedAuthor.UserName</option>
-                }
-            </select>
-        </div>
-    </abp-column>
-</abp-row>
+                    @if (Model.SelectedAuthor != null)
+                    {
+                        <option selected value="@Model.AuthorId" selected="selected">@Model.SelectedAuthor.UserName</option>
+                    }
+                </select>
+            </div>
+        </abp-column>
+    </abp-row>
+    <hr />
+}
+
+@if (Model.TagId.HasValue)
+{
+    <h4>@L["Tags"]</h4>
+    <span class="badge rounded-pill badge-secondary text-bg-secondary">@Model.FilteredTagName
+        <a href="/@CmsBlogsWebConsts.BlogsRoutePrefix/@Model.BlogSlug" class="text-bg-secondary"><i class="fa fa-close ms-1"></i></a>
+        </span>
+    <hr />
+}
+
 <abp-row id="blogs-container">
     @foreach (var blog in Model.Blogs.Items)
     {
@@ -63,7 +85,7 @@
                         <small style="opacity:.65;">@blog.CreationTime</small>
                     </p>
                     <h5 class="my-3">@blog.Title</h5>
-                    <p style="min-height: 60px;">@blog.ShortDescription</p>
+                    <p class="cms-blogpost-desc-preview">@blog.ShortDescription</p>
                     <div class=" ">
                         <a href="/blogs/@Model.BlogSlug/@blog.Slug" class="stretched-link text-decoration-none fw-normal">
                             @L["Read"] <i class="fa fa-chevron-right"></i>

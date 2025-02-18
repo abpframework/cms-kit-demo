@@ -1,5 +1,10 @@
 ﻿@page
 
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Alert
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Blockquote
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Card
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Grid
+@using Volo.Abp.AspNetCore.Mvc.UI.Bundling.TagHelpers
 @using Volo.Abp.Data
 @using Volo.Abp.Users;
 @using Volo.CmsKit.Public.Blogs
@@ -13,6 +18,7 @@
 @using Volo.CmsKit.Web.Renderers
 @using Volo.Abp.AspNetCore.Mvc.UI.Packages.HighlightJs
 @using Volo.CmsKit.Contents
+@using Volo.CmsKit.Web
 
 @inherits CmsKitPublicPageBase
 
@@ -53,12 +59,10 @@
 
 <div class="row">
     <div class="col-lg-8 col-md-10 col-12 mx-auto pb-4">
-        <input hidden id="BlogId" value="@Model.ViewModel.Id" />
         <abp-card class="mb-4">
-            <div>
-                <img src="/api/cms-kit/media/@Model.ViewModel.CoverImageMediaId" class="card-img-top rounded" onerror="this.src='@dummyImageSource'" />
-            </div>
-            <abp-card-body class="p-lg-5">
+            <img src="/api/cms-kit/media/@Model.ViewModel.CoverImageMediaId" class="card-img-ratio" onerror="this.src='@dummyImageSource'" />
+            <input hidden id="BlogId" value="@Model.ViewModel.Id" />
+            <abp-card-body>
                 <abp-row>
                     <div class="col">
                         <p class="mt-2"> 
@@ -94,7 +98,7 @@
                                 {
                                     entityType = Volo.CmsKit.Blogs.BlogPostConsts.EntityType,
                                     entityId = Model.ViewModel.Id.ToString(),
-                                    urlFormat = $"/blogs/{Model.BlogSlug}?tagId={{TagId}}"
+                                    urlFormat = $"/{CmsBlogsWebConsts.BlogsRoutePrefix}/{Model.BlogSlug}?tagId={{TagId}}"
                                 })
                             }
                         }

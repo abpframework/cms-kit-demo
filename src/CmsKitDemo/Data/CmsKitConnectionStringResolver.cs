@@ -48,6 +48,7 @@ public class CmsKitConnectionStringResolver : DefaultConnectionStringResolver
             File.Copy(_configuration["App:DbFolderName"]?.EnsureEndsWith(Path.DirectorySeparatorChar) + _configuration["App:DefaultDbName"] + ".db", dbFilePath);
         }
 
+        
         return $"Data Source={dbFilePath};Cache=Shared";
     }
 }
