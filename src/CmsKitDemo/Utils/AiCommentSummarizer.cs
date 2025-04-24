@@ -30,6 +30,7 @@ public class AiCommentSummarizer : ITransientDependency
             .GetChatClient(aiModel)
             .AsIChatClient();
 
+        // Create a prompt (input for AI)
         var promptBuilder = new StringBuilder();
 
         promptBuilder.AppendLine(
@@ -46,7 +47,7 @@ Return a single comment with a maximum of 512 characters. Comments are separated
             promptBuilder.AppendLine();
         }
         
-        // Submit the prompt and print out the response
+        // Submit the prompt and get the response
         var response = await client.GetResponseAsync(
             promptBuilder.ToString(),
             new ChatOptions { MaxOutputTokens = 1024 }
