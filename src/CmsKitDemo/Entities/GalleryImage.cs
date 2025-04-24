@@ -9,6 +9,8 @@ namespace CmsKitDemo.Entities
         public string Description { get; set; }
 
         public Guid CoverImageMediaId { get; set; }
+        
+        public string CommentsSummary { get; set; }
 
         protected GalleryImage()
         {
