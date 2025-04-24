@@ -20,6 +20,11 @@ public class AiCommentSummarizer : ITransientDependency
         var aiModel = _configuration["ModelName"];
         var apiKey = _configuration["OpenAIKey"];
 
+        if (aiModel.IsNullOrEmpty() || apiKey.IsNullOrEmpty())
+        {
+            return "";
+        }
+
         // Create the IChatClient
         var client = new OpenAIClient(apiKey)
             .GetChatClient(aiModel)
