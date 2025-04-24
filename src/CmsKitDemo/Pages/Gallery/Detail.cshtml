@@ -40,8 +40,16 @@
                     </div>
                 </div>
             </div>
-
         </div>
+        @if (!Model.Image.CommentsSummary.IsNullOrEmpty())
+        {
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h6 class="card-title">Summary of the User Comments</h6>
+                    <p class="mb-auto">@Model.Image.CommentsSummary</p>
+                </div>
+            </div>
+        }
         @if (GlobalFeatureManager.Instance.IsEnabled<CommentsFeature>())
         {
             @await Component.InvokeAsync(typeof(CommentingViewComponent), new

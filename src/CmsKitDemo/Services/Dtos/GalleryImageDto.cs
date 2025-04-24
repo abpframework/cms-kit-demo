@@ -6,5 +6,7 @@ namespace CmsKitDemo.Services.Dtos
     {
         public string Description { get; set; }
         public Guid CoverImageMediaId { get; set; }
+        
+        public string CommentsSummary { get; set; }
     }
 }
