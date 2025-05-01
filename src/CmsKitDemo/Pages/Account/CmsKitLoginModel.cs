@@ -16,18 +16,20 @@ namespace CmsKitDemo.Pages.Account;
 public class CmsKitLoginModel : LoginModel
 {
     private readonly IHostEnvironment _environment;
-    
+
     public CmsKitLoginModel(
-        IAuthenticationSchemeProvider schemeProvider, 
+        IAuthenticationSchemeProvider schemeProvider,
         IOptions<AbpAccountOptions> accountOptions,
         IOptions<IdentityOptions> identityOptions,
         IdentityDynamicClaimsPrincipalContributorCache identityDynamicClaimsPrincipalContributorCache,
+        IWebHostEnvironment webHostEnvironment,
         IHostEnvironment environment)
         : base(
-        schemeProvider,
-        accountOptions,
-        identityOptions,
-        identityDynamicClaimsPrincipalContributorCache)
+            schemeProvider,
+            accountOptions,
+            identityOptions,
+            identityDynamicClaimsPrincipalContributorCache,
+            webHostEnvironment)
     {
         _environment = environment;
     }
@@ -38,7 +40,7 @@ public class CmsKitLoginModel : LoginModel
         {
             return await base.OnPostAsync(action);
         }
-        
+
         await CheckLocalLoginAsync();
 
         ValidateModel();
@@ -55,7 +57,7 @@ public class CmsKitLoginModel : LoginModel
         {
             return await base.OnPostAsync(action);
         }
-        
+
         Alerts.Danger("In this demo, access to the admin panel is disabled. If you want to see the admin panel, download the project from GitHub and run it yourself: https://github.com/abpframework/cms-kit-demo");
         return Page();
     }
