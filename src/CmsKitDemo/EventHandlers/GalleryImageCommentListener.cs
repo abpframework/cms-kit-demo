@@ -1,6 +1,8 @@
-﻿using CmsKitDemo.Entities;
+﻿using System.Security.Cryptography;
+using CmsKitDemo.Entities;
 using CmsKitDemo.Utils;
 using Microsoft.EntityFrameworkCore;
+using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Entities.Events;
 using Volo.Abp.Domain.Repositories;
@@ -13,16 +15,19 @@ public class GalleryImageCommentListener : ILocalEventHandler<EntityChangedEvent
 {
     private readonly IRepository<GalleryImage, Guid> _galleryImageRepository;
     private readonly IRepository<Comment, Guid> _commentRepository;
-    private readonly AiCommentSummarizer _aiCommentSummarizer;
+    private readonly AiCommentSummarizer _commentSummarizer;
+    private readonly AiSpamDetector _spamDetector;
 
     public GalleryImageCommentListener(
         IRepository<GalleryImage, Guid> galleryImageRepository,
         IRepository<Comment, Guid> commentRepository,
-        AiCommentSummarizer aiCommentSummarizer)
+        AiCommentSummarizer commentSummarizer,
+        AiSpamDetector spamDetector)
     {
         _galleryImageRepository = galleryImageRepository;
         _commentRepository = commentRepository;
-        _aiCommentSummarizer = aiCommentSummarizer;
+        _commentSummarizer = commentSummarizer;
+        _spamDetector = spamDetector;
     }
     
     public async Task HandleEventAsync(EntityChangedEventData<Comment> eventData)
@@ -34,23 +39,40 @@ public class GalleryImageCommentListener : ILocalEventHandler<EntityChangedEvent
         {
             return;
         }
+        
+        // Check if the comment is spam
+        if (comment.IsApproved == null)
+        {
+            if (await _spamDetector.IsSpamAsync(comment.Text))
+            {
+                comment.Reject();
+            }
+            else
+            {
+                comment.Approve();
+            }
+            
+            return;
+        }
 
         if (!Guid.TryParse(comment.EntityId, out var galleryImageId))
         {
             return;
         }
         
-        // Get the related image from database
+        // Get the related image from the database
         var galleryImage = await _galleryImageRepository.FindAsync(galleryImageId);
         if (galleryImage == null)
         {
             return;
         }
-        
+
         // Get all the comments related to the image
         var queryable = await _commentRepository.GetQueryableAsync();
         var allCommentTexts = await queryable
-            .Where(c => c.EntityType == CmsKitDemoConsts.ImageGalleryEntityType && c.EntityId == comment.EntityId)
+            .Where(c => c.EntityType == CmsKitDemoConsts.ImageGalleryEntityType && 
+                        c.EntityId == comment.EntityId && 
+                        c.IsApproved == true)
             .Select(c => c.Text)
             .ToArrayAsync();
 
@@ -61,10 +83,12 @@ public class GalleryImageCommentListener : ILocalEventHandler<EntityChangedEvent
         }
         else
         {
-            galleryImage.CommentsSummary = await _aiCommentSummarizer.SummarizeAsync(allCommentTexts);
-        }
-
+            galleryImage.CommentsSummary = await _commentSummarizer.SummarizeAsync(allCommentTexts);
+        }        
+            
         // Update the image in database
         await _galleryImageRepository.UpdateAsync(galleryImage);
+        
+        
     }
 }
