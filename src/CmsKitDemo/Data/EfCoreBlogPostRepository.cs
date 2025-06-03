@@ -4,6 +4,7 @@ using Volo.Abp.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.CmsKit.Blogs;
 using Volo.CmsKit.EntityFrameworkCore;
+using Volo.CmsKit.MarkedItems;
 using Volo.CmsKit.Tags;
 using Volo.CmsKit.Users;
 
@@ -15,10 +16,12 @@ namespace CmsKitDemo.Data;
 public class CmsKitDemoEfCoreBlogPostRepository : EfCoreBlogPostRepository
 {
     private readonly EntityTagManager _entityTagManager;
-    
+
     public CmsKitDemoEfCoreBlogPostRepository(
-        IDbContextProvider<ICmsKitDbContext> dbContextProvider, 
-        EntityTagManager entityTagManager) : base(dbContextProvider, entityTagManager)
+        IDbContextProvider<ICmsKitDbContext> dbContextProvider,
+        MarkedItemManager markedItemManager,
+        EntityTagManager entityTagManager)
+        : base(dbContextProvider, markedItemManager, entityTagManager)
     {
         _entityTagManager = entityTagManager;
     }
@@ -28,6 +31,7 @@ public class CmsKitDemoEfCoreBlogPostRepository : EfCoreBlogPostRepository
         Guid? blogId = null,
         Guid? authorId = null,
         Guid? tagId = null,
+        Guid? favoriteUserId = null,
         BlogPostStatus? statusFilter = null,
         int maxResultCount = int.MaxValue,
         int skipCount = 0,
