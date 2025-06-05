@@ -74,8 +74,11 @@ public static class CmsKitDemoAssemblyInfo
     {
         try
         {
-            var assembly = Assembly.GetAssembly(typeof(CmsKitDemoModule));
-            return GetAssemblyInformation(assembly);
+            var abpAssembly = Assembly.GetAssembly(typeof(AbpModule));
+            var abpAssemblyInfo = GetAssemblyInformation(abpAssembly);
+            var cmsKitDemoAssembly = Assembly.GetAssembly(typeof(CmsKitDemoAssemblyInfo));
+            var cmsKitDemoAssemblyInfo = GetAssemblyInformation(cmsKitDemoAssembly);
+            return new AssemblyInformation(cmsKitDemoAssemblyInfo.ModificationDate, abpAssemblyInfo.ProductVersion);
         }
         catch (Exception ex)
         {
