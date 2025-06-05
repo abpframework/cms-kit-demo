@@ -74,7 +74,7 @@ public static class CmsKitDemoAssemblyInfo
     {
         try
         {
-            var assembly = Assembly.GetAssembly(typeof(AbpModule));
+            var assembly = Assembly.GetAssembly(typeof(CmsKitDemoModule));
             return GetAssemblyInformation(assembly);
         }
         catch (Exception ex)
