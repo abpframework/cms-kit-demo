@@ -63,6 +63,7 @@ using Volo.CmsKit.Reactions;
 using Volo.CmsKit.Comments;
 using Microsoft.EntityFrameworkCore.Query;
 using Volo.Abp.AspNetCore.Mvc.AntiForgery;
+using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Toolbars;
 using Volo.Abp.Ui.LayoutHooks;
 
 namespace CmsKitDemo;
@@ -178,7 +179,7 @@ public class CmsKitDemoModule : AbpModule
         ConfigureRazorPages();
         ConfigureCmsKit(context);
         ConfigureHealthChecks(context);
-        
+
         Configure<AbpLayoutHookOptions>(options =>
         {
             options.Add(
@@ -186,7 +187,7 @@ public class CmsKitDemoModule : AbpModule
                 typeof(CmsKitDemoFooterViewComponent)
             );
         });
-        
+
         Configure<AbpAntiForgeryOptions>(options =>
         {
             options.TokenCookie.SecurePolicy = CookieSecurePolicy.Always;
@@ -286,6 +287,11 @@ public class CmsKitDemoModule : AbpModule
         Configure<AbpNavigationOptions>(options =>
         {
             options.MenuContributors.Add(new CmsKitDemoMenuContributor());
+        });
+
+        Configure<AbpToolbarOptions>(options =>
+        {
+            options.Contributors.Add(new CmsKitDemoToolbarContributor());
         });
     }
 
