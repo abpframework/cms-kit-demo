@@ -2,6 +2,7 @@
 
     function initModal(modalManager, args) {
         var fileUploadUri = "/api/cms-kit-admin/media/page";
+        var l = abp.localization.getResource("CmsKitDemo");
 
         var fileInput = document.getElementById("ImageFile");
         var file;
