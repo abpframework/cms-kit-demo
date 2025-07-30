@@ -54,7 +54,7 @@ Custom implementation (image gallery) with CMS Kit’s [Comment](https://abp.io/
 
 *Our Team* and *Products* uses the [Pages Feature](https://abp.io/docs/latest/Modules/Cms-Kit/Pages) of the CMS Kit Module (with dynamic content, styles & scripts):
 
-| products/abp-commercial | products/aspnet-zero  |
+| products/abp-framework | products/aspnet-zero  |
 |------------------------ |-----------------------|
-| ![](assets/images/products-abp-commercial.png) | ![](assets/images/products-aspnetzero.png)  |
+| ![](assets/images/products-abp-framework.png) | ![](assets/images/products-aspnetzero.png)  |
 
