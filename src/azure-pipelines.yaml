@@ -34,6 +34,7 @@ stages:
       name: aks-deployer-agent
     steps:
     - checkout: self
+      clean: true
     - checkout: devops
 
     - task: Docker@2
