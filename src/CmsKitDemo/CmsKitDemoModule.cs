@@ -224,6 +224,7 @@ public class CmsKitDemoModule : AbpModule
                 BasicThemeBundles.Styles.Global,
                 bundle =>
                 {
+                    bundle.AddExternalFiles("/googlefonts.css");
                     bundle.AddFiles("/global-styles.css");
                 }
             );
