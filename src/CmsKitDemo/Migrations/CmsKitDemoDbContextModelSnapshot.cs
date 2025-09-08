@@ -18,7 +18,7 @@ namespace CmsKitDemo.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("_Abp_DatabaseProvider", EfCoreDatabaseProvider.Sqlite)
-                .HasAnnotation("ProductVersion", "9.0.4");
+                .HasAnnotation("ProductVersion", "9.0.5");
 
             modelBuilder.Entity("CmsKitDemo.Entities.GalleryImage", b =>
                 {
@@ -227,6 +227,34 @@ namespace CmsKitDemo.Migrations
                     b.HasIndex("TenantId", "ServiceName", "MethodName", "ExecutionTime");
 
                     b.ToTable("AbpAuditLogActions", (string)null);
+                });
+
+            modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLogExcelFile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<string>("FileName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("FileName");
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("TenantId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AbpAuditLogExcelFiles", (string)null);
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.EntityChange", b =>
