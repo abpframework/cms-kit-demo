@@ -64,6 +64,7 @@ using Volo.CmsKit.Comments;
 using Microsoft.EntityFrameworkCore.Query;
 using Volo.Abp.AspNetCore.Mvc.AntiForgery;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared.Toolbars;
+using Volo.Abp.Studio.Client.AspNetCore;
 using Volo.Abp.Ui.LayoutHooks;
 
 namespace CmsKitDemo;
@@ -77,6 +78,7 @@ namespace CmsKitDemo;
     typeof(AbpSwashbuckleModule),
     typeof(AbpAspNetCoreSerilogModule),
     typeof(AbpAspNetCoreMvcUiBasicThemeModule),
+    typeof(AbpStudioClientAspNetCoreModule),
 
     // Account module packages
     typeof(AbpAccountApplicationModule),
@@ -418,6 +420,7 @@ public class CmsKitDemoModule : AbpModule
 
         app.UseMiddleware<DbMigrationMiddleware>();
 
+        app.UseAbpStudioLink();
         app.UseCorrelationId();
         app.MapAbpStaticAssets();
         app.UseRouting();

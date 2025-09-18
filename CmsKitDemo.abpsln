@@ -5,5 +5,10 @@
     "CmsKitDemo": {
       "path": "src/CmsKitDemo.abpmdl"
     }
+  },
+  "runProfiles": {
+    "Default": {
+      "path": "etc/abp-studio/run-profiles/Default.abprun.json"
+    }
   }
 }

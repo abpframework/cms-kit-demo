@@ -1,0 +1,11 @@
+{
+  "metadata": {},
+  "applications": {
+    "CmsKitDemo": {
+      "type": "dotnet-project",
+      "path": "../../../src/CmsKitDemo/CmsKitDemo.csproj",
+      "launchUrl": "https://localhost:44373/",
+      "runnable": true
+    }
+  }
+}

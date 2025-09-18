@@ -34,7 +34,21 @@ public class Program
             var builder = WebApplication.CreateBuilder(args);
             builder.Host.AddAppSettingsSecretsJson()
                 .UseAutofac()
-                .UseSerilog();
+                .UseSerilog((context, services, loggerConfiguration) =>
+                {
+                    loggerConfiguration
+#if DEBUG
+                        .MinimumLevel.Debug()
+#else
+                        .MinimumLevel.Information()
+#endif
+                        .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                        .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
+                        .Enrich.FromLogContext()
+                        .WriteTo.Async(c => c.File("Logs/logs.txt"))
+                        .WriteTo.Async(c => c.Console())
+                        .WriteTo.Async(c => c.AbpStudio(services));
+                });
             if (IsMigrateDatabase(args))
             {
                 builder.Services.AddDataMigrationEnvironment();
