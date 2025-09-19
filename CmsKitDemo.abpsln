@@ -1,0 +1,14 @@
+{
+  "id": "926b33e4-575c-4b18-bf43-e1aec7acfdb7",
+  "template": "empty",
+  "modules": {
+    "CmsKitDemo": {
+      "path": "src/CmsKitDemo.abpmdl"
+    }
+  },
+  "runProfiles": {
+    "Default": {
+      "path": "etc/abp-studio/run-profiles/Default.abprun.json"
+    }
+  }
+}
