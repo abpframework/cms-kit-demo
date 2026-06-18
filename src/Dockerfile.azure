@@ -1,6 +1,6 @@
 FROM node:20 AS nodebase
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS base
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS base
 
 COPY --from=nodebase /usr/local/bin /usr/local/bin
 COPY --from=nodebase /usr/local/lib /usr/local/lib
@@ -13,7 +13,7 @@ WORKDIR /src/CmsKitDemo
 RUN abp install-libs
 RUN dotnet publish -c Release -o bin/Release/publish
 
-FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 RUN apt-get update && apt-get install -y libgdiplus
 WORKDIR /app
 COPY --from=base /src/CmsKitDemo/CmsKitDemoDb/CmsKitDemo.db /app/CmsKitDemoDb/CmsKitDemo.db
