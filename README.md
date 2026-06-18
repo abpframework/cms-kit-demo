@@ -12,7 +12,8 @@ We've organized a community talk to show CMS Kit's capabilities and used this so
 
 ## Requirements
 
-* .NET 9.0+
+* .NET 10.0+
+* ABP CLI 10.4.1+ (for `abp install-libs`)
 
 ## How to run?
 

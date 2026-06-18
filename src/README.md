@@ -2,6 +2,11 @@
 
 This is a minimalist, non-layered startup solution with ABP. All the fundamental ABP modules are already installed.
 
+## Requirements
+
+* .NET 10.0+
+* ABP CLI 10.4.1+ (for `abp install-libs`)
+
 ## How to run
 
 The application needs to connect to a database. Run the following command in the `CmsKitDemo` directory:
