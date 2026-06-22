@@ -7,5 +7,13 @@
       "launchUrl": "https://localhost:44373/",
       "runnable": true
     }
+  },
+  "tasks": {
+    "Initialize Solution": {
+      "behaviour": 2,
+      "startCommand": "./initialize-solution.ps1",
+      "workingDirectory": "../scripts",
+      "shortDescription": "Installs MVC UI libraries and applies the SQLite database migrations."
+    }
   }
 }
