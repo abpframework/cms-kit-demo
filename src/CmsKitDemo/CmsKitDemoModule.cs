@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using CmsKitDemo.Data;
 using CmsKitDemo.HealthChecks;
 using CmsKitDemo.Localization;
